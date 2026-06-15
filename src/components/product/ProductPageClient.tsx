@@ -1,0 +1,527 @@
+"use client";
+
+import { useState, useRef, useMemo } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Star,
+  Minus,
+  Plus,
+  ShoppingCart,
+  Check,
+  ChevronRight,
+  ChevronLeft,
+  Truck,
+  ShieldCheck,
+  RotateCcw,
+  MessageCircle,
+  ThumbsUp,
+  ChevronDown,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import type { Product, Review } from "@/lib/types";
+import { getProductReviews, getRelatedProducts, products } from "@/lib/data/products";
+import { useCart } from "@/components/providers/CartProvider";
+import { ProductCard } from "@/components/product/ProductCard";
+
+interface ProductPageClientProps {
+  product: Product;
+}
+
+function RatingStars({ rating, size = "md" }: { rating: number; size?: "sm" | "md" | "lg" }) {
+  const sizeMap = { sm: "size-3", md: "size-4", lg: "size-5" };
+  return (
+    <div className="flex items-center gap-0.5">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star
+          key={i}
+          className={cn(
+            sizeMap[size],
+            i < Math.floor(rating) ? "fill-amber-400 text-amber-400" : "fill-muted text-muted"
+          )}
+        />
+      ))}
+    </div>
+  );
+}
+
+function ReviewCard({ review }: { review: Review }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="rounded-xl border border-border bg-card p-4"
+    >
+      <div className="flex items-center gap-3">
+        <div className="relative size-10 overflow-hidden rounded-full bg-secondary">
+          <Image src={review.avatar} alt={review.userName} fill className="object-cover" />
+        </div>
+        <div>
+          <p className="font-semibold text-sm">{review.userName}</p>
+          <div className="flex items-center gap-1">
+            <RatingStars rating={review.rating} size="sm" />
+            <span className="text-xs text-muted-foreground">{review.date}</span>
+          </div>
+        </div>
+      </div>
+      <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{review.comment}</p>
+    </motion.div>
+  );
+}
+
+export function ProductPageClient({ product }: ProductPageClientProps) {
+  const { addItem } = useCart();
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [selectedImage, setSelectedImage] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+  const [reviewFilter, setReviewFilter] = useState<number | null>(null);
+  const [showAllReviews, setShowAllReviews] = useState(false);
+
+  const productReviews = useMemo(() => getProductReviews(product.id), [product.id]);
+  const relatedProducts = useMemo(() => getRelatedProducts(product.id, 8), [product.id]);
+
+  const filteredReviews = useMemo(() => {
+    if (reviewFilter === null) return productReviews;
+    return productReviews.filter((r) => Math.floor(r.rating) === reviewFilter);
+  }, [productReviews, reviewFilter]);
+
+  const avgRating = product.rating ?? 0;
+  const totalReviews = product.reviewCount ?? productReviews.length;
+  const ratingDistribution = [5, 4, 3, 2, 1].map((star) => {
+    const count = productReviews.filter((r) => Math.floor(r.rating) === star).length;
+    const pct = totalReviews > 0 ? (count / totalReviews) * 100 : 0;
+    return { star, count, pct };
+  });
+
+  const handleAddToCart = () => {
+    addItem({ productId: product.id, quantity, product });
+  };
+
+  const handleWhatsAppOrder = () => {
+    const message = `مرحباً، أريد طلب:\n${product.nameAr}\nالكمية: ${quantity}\nالسعر: ${product.price * quantity} درهم`;
+    window.open(`https://wa.me/212600000000?text=${encodeURIComponent(message)}`, "_blank");
+  };
+
+  const scrollRelated = (dir: "left" | "right") => {
+    if (!scrollRef.current) return;
+    const scrollAmount = 300;
+    scrollRef.current.scrollBy({
+      left: dir === "left" ? -scrollAmount : scrollAmount,
+      behavior: "smooth",
+    });
+  };
+
+  const frequentlyBought = useMemo(() => {
+    return products
+      .filter((p) => p.id !== product.id && (p.category === product.category || p.tags.some((t) => product.tags.includes(t))))
+      .slice(0, 4);
+  }, [product.id, product.category, product.tags]);
+
+  return (
+    <div className="bg-background">
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-10">
+        {/* Breadcrumb */}
+        <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
+          <Link href="/" className="hover:text-foreground transition-colors">
+            الرئيسية
+          </Link>
+          <ChevronLeft className="size-3" />
+          <Link href="/shop" className="hover:text-foreground transition-colors">
+            المتجر
+          </Link>
+          <ChevronLeft className="size-3" />
+          <span className="text-foreground font-medium truncate">{product.nameAr}</span>
+        </nav>
+
+        {/* Main Product Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+          {/* Image Gallery */}
+          <div className="flex flex-col gap-4">
+            <div className="relative aspect-square overflow-hidden rounded-2xl bg-muted">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={selectedImage}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute inset-0 group"
+                >
+                  <Image
+                    src={product.images[selectedImage]}
+                    alt={`${product.nameAr} - ${selectedImage + 1}`}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    priority={selectedImage === 0}
+                  />
+                </motion.div>
+              </AnimatePresence>
+              <div className="absolute bottom-3 right-3 rounded-full bg-black/60 px-3 py-1 text-xs text-white backdrop-blur-sm">
+                {selectedImage + 1} / {product.images.length}
+              </div>
+            </div>
+            {/* Thumbnails */}
+            <div className="flex gap-3 overflow-x-auto pb-1">
+              {product.images.map((img, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setSelectedImage(idx)}
+                  className={cn(
+                    "relative size-20 shrink-0 overflow-hidden rounded-lg border-2 transition-all",
+                    selectedImage === idx
+                      ? "border-primary ring-2 ring-primary/30"
+                      : "border-border hover:border-primary/50"
+                  )}
+                >
+                  <Image
+                    src={img}
+                    alt={`${product.nameAr} thumbnail ${idx + 1}`}
+                    fill
+                    className="object-cover"
+                  />
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Product Info */}
+          <div className="flex flex-col gap-6">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-foreground leading-tight">
+                {product.nameAr}
+              </h1>
+              <div className="flex items-center gap-3 mt-3">
+                <RatingStars rating={avgRating} size="md" />
+                <span className="text-sm text-muted-foreground">
+                  {avgRating.toFixed(1)} ({totalReviews} تقييم)
+                </span>
+              </div>
+            </div>
+
+            {/* Price */}
+            <div className="flex items-baseline gap-3">
+              <span className="text-3xl font-bold text-foreground">{product.price} درهم</span>
+              {product.originalPrice && (
+                <>
+                  <span className="text-lg text-muted-foreground line-through">
+                    {product.originalPrice} درهم
+                  </span>
+                  <span className="rounded-full bg-red-100 px-2.5 py-0.5 text-sm font-bold text-red-600 dark:bg-red-900/30 dark:text-red-400">
+                    {product.discount ? `-${product.discount}%` : "تخفيض"}
+                  </span>
+                </>
+              )}
+            </div>
+
+            {/* Stock */}
+            <div className="flex items-center gap-2">
+              <div className="size-2.5 rounded-full bg-emerald-500" />
+              <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">في المخزون</span>
+            </div>
+
+            {/* Description */}
+            <p className="text-muted-foreground leading-relaxed">{product.descriptionAr}</p>
+
+            {/* Features */}
+            <div className="rounded-xl border border-border bg-muted/30 p-4">
+              <h3 className="font-semibold text-foreground mb-3">المميزات</h3>
+              <ul className="space-y-2">
+                {product.features.map((feature, idx) => (
+                  <motion.li
+                    key={idx}
+                    initial={{ opacity: 0, x: -16 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1 }}
+                    className="flex items-center gap-2.5 text-sm"
+                  >
+                    <Check className="size-4 text-emerald-500 shrink-0" />
+                    <span>{feature}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Specifications */}
+            <div className="rounded-xl border border-border overflow-hidden">
+              <table className="w-full text-sm">
+                <tbody>
+                  {Object.entries(product.specifications).map(([key, value], idx) => (
+                    <tr key={key} className={idx % 2 === 0 ? "bg-muted/30" : ""}>
+                      <td className="px-4 py-2.5 font-medium text-foreground">{key}</td>
+                      <td className="px-4 py-2.5 text-muted-foreground">{value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Quantity Selector */}
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-medium">الكمية:</span>
+              <div className="flex items-center gap-0 rounded-xl border border-border">
+                <button
+                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                  className="p-2.5 hover:bg-muted transition-colors rounded-r-xl"
+                  aria-label="تقليل الكمية"
+                >
+                  <Minus className="size-4" />
+                </button>
+                <span className="w-10 text-center font-semibold text-sm select-none">{quantity}</span>
+                <button
+                  onClick={() => setQuantity((q) => q + 1)}
+                  className="p-2.5 hover:bg-muted transition-colors rounded-l-xl"
+                  aria-label="زيادة الكمية"
+                >
+                  <Plus className="size-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col gap-3">
+              <motion.button
+                whileTap={{ scale: 0.98 }}
+                onClick={handleAddToCart}
+                disabled={!product.inStock}
+                className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#E8A0BF] py-3.5 text-base font-bold text-white shadow-lg shadow-primary/25 hover:bg-[#d48dac] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <ShoppingCart className="size-5" />
+                أضف إلى السلة
+              </motion.button>
+              <motion.button
+                whileTap={{ scale: 0.98 }}
+                onClick={handleWhatsAppOrder}
+                className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-[#25D366] py-3.5 text-base font-bold text-[#25D366] hover:bg-[#25D366]/5 transition-colors"
+              >
+                <MessageCircle className="size-5" />
+                اطلب عبر واتساب
+              </motion.button>
+            </div>
+
+            {/* COD Info */}
+            <div className="rounded-xl border border-emerald-200 bg-emerald-50/50 p-4 dark:border-emerald-800 dark:bg-emerald-950/20">
+              <div className="flex items-center gap-2 mb-1.5">
+                <ShieldCheck className="size-5 text-emerald-600 dark:text-emerald-400" />
+                <span className="font-bold text-emerald-700 dark:text-emerald-300">الدفع عند الاستلام متاح ✓</span>
+              </div>
+              <p className="text-sm text-muted-foreground">لا تدفع حتى تستلم طلبك وتتأكد من جودته. متاح في جميع مدن المغرب.</p>
+            </div>
+
+            {/* Delivery Info */}
+            <div className="flex items-center gap-3 rounded-xl border border-border bg-muted/20 p-4">
+              <Truck className="size-5 text-primary shrink-0" />
+              <div>
+                <p className="font-semibold text-sm">توصيل سريع لجميع مدن المغرب 🚚</p>
+                <p className="text-xs text-muted-foreground mt-0.5">التوصيل خلال 2-5 أيام عمل. التوصيل مجاني للطلبات فوق 300 درهم.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Customer Reviews Section */}
+        <motion.section
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-16"
+        >
+          <h2 className="text-2xl font-bold text-foreground mb-6">تقييمات العملاء</h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Rating Summary */}
+            <div className="rounded-2xl border border-border bg-card p-6 text-center">
+              <span className="text-5xl font-bold text-foreground">{avgRating.toFixed(1)}</span>
+              <div className="flex justify-center mt-2">
+                <RatingStars rating={avgRating} size="lg" />
+              </div>
+              <p className="text-sm text-muted-foreground mt-2">{totalReviews} تقييم</p>
+              <div className="mt-4 space-y-1.5">
+                {ratingDistribution.map(({ star, count, pct }) => (
+                  <div key={star} className="flex items-center gap-2 text-sm">
+                    <span className="w-5 text-right text-muted-foreground">{star}</span>
+                    <Star className="size-3.5 fill-amber-400 text-amber-400" />
+                    <div className="flex-1 h-2 rounded-full bg-muted overflow-hidden">
+                      <div className="h-full rounded-full bg-amber-400" style={{ width: `${pct}%` }} />
+                    </div>
+                    <span className="w-8 text-left text-xs text-muted-foreground">{count}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Reviews List */}
+            <div className="md:col-span-2">
+              {/* Filter */}
+              <div className="flex flex-wrap items-center gap-2 mb-4">
+                <button
+                  onClick={() => setReviewFilter(null)}
+                  className={cn(
+                    "rounded-full px-4 py-1.5 text-sm font-medium transition-colors border",
+                    reviewFilter === null
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-card text-muted-foreground border-border hover:border-primary/50"
+                  )}
+                >
+                  الكل
+                </button>
+                {[5, 4, 3, 2, 1].map((star) => (
+                  <button
+                    key={star}
+                    onClick={() => setReviewFilter(star)}
+                    className={cn(
+                      "rounded-full px-4 py-1.5 text-sm font-medium transition-colors border flex items-center gap-1",
+                      reviewFilter === star
+                        ? "bg-primary text-primary-foreground border-primary"
+                        : "bg-card text-muted-foreground border-border hover:border-primary/50"
+                    )}
+                  >
+                    {star} <Star className="size-3 fill-amber-400 text-amber-400" />
+                  </button>
+                ))}
+              </div>
+
+              {filteredReviews.length === 0 ? (
+                <div className="rounded-xl border border-border bg-card p-8 text-center">
+                  <p className="text-muted-foreground">لا توجد تقييمات بعد. كن أول من يقيم هذا المنتج!</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {filteredReviews.slice(0, showAllReviews ? undefined : 3).map((review) => (
+                    <ReviewCard key={review.id} review={review} />
+                  ))}
+                  {filteredReviews.length > 3 && (
+                    <button
+                      onClick={() => setShowAllReviews(!showAllReviews)}
+                      className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-border py-2.5 text-sm font-medium text-muted-foreground hover:bg-muted transition-colors"
+                    >
+                      {showAllReviews ? "عرض أقل" : `عرض كل التقييمات (${filteredReviews.length})`}
+                      <ChevronDown className={cn("size-4 transition-transform", showAllReviews && "rotate-180")} />
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {/* Write Review */}
+              <button className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border py-3 text-sm font-semibold text-muted-foreground hover:border-primary hover:text-primary transition-colors">
+                اكتب تقييمك
+              </button>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* Related Products */}
+        {relatedProducts.length > 0 && (
+          <motion.section
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-16"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-foreground">منتجات قد تعجبك أيضاً</h2>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => scrollRelated("right")}
+                  className="rounded-full border border-border p-2 hover:bg-muted transition-colors"
+                  aria-label="التمرير لليسار"
+                >
+                  <ChevronRight className="size-5" />
+                </button>
+                <button
+                  onClick={() => scrollRelated("left")}
+                  className="rounded-full border border-border p-2 hover:bg-muted transition-colors"
+                  aria-label="التمرير لليمين"
+                >
+                  <ChevronLeft className="size-5" />
+                </button>
+              </div>
+            </div>
+            <div
+              ref={scrollRef}
+              className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide"
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            >
+              {relatedProducts.map((p) => (
+                <div key={p.id} className="min-w-[220px] sm:min-w-[250px] shrink-0">
+                  <ProductCard product={p} variant="default" />
+                </div>
+              ))}
+            </div>
+          </motion.section>
+        )}
+
+        {/* Frequently Bought Together */}
+        {frequentlyBought.length > 0 && (
+          <motion.section
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-16 rounded-2xl border border-border bg-card p-6"
+          >
+            <h2 className="text-xl font-bold text-foreground mb-4">اشتريت معاً</h2>
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <div className="w-28 shrink-0">
+                <div className="relative aspect-square overflow-hidden rounded-xl bg-muted">
+                  <Image src={product.images[0]} alt={product.nameAr} fill className="object-cover" />
+                </div>
+                <p className="mt-2 text-center text-xs font-medium truncate">{product.nameAr}</p>
+              </div>
+              {frequentlyBought.slice(0, 3).map((p, idx) => (
+                <div key={p.id} className="flex items-center gap-4">
+                  {idx === 0 && <Plus className="size-5 text-muted-foreground shrink-0" />}
+                  <div className="w-28 shrink-0">
+                    <Link href={`/products/${p.slug}`}>
+                      <div className="relative aspect-square overflow-hidden rounded-xl bg-muted">
+                        <Image src={p.images[0]} alt={p.nameAr} fill className="object-cover" />
+                      </div>
+                      <p className="mt-2 text-center text-xs font-medium truncate">{p.nameAr}</p>
+                    </Link>
+                  </div>
+                  {idx < 2 && <Plus className="size-5 text-muted-foreground shrink-0" />}
+                </div>
+              ))}
+              <div className="flex flex-col items-center gap-2 shrink-0">
+                <span className="text-lg font-bold">
+                  {product.price + frequentlyBought.slice(0, 3).reduce((sum, p) => sum + p.price, 0)} درهم
+                </span>
+                <button className="rounded-xl bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground hover:bg-primary/90 transition-colors">
+                  أضف الكل للسلة
+                </button>
+              </div>
+            </div>
+          </motion.section>
+        )}
+      </div>
+
+      {/* Mobile Sticky Buy Button */}
+      <div className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-card/95 backdrop-blur-md p-3 lg:hidden">
+        <div className="flex items-center gap-3">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-baseline gap-2">
+              <span className="text-lg font-bold text-foreground">{product.price} درهم</span>
+              {product.originalPrice && (
+                <span className="text-sm text-muted-foreground line-through">{product.originalPrice} درهم</span>
+              )}
+            </div>
+            <div className="flex items-center gap-1 mt-0.5">
+              <RatingStars rating={avgRating} size="sm" />
+              <span className="text-xs text-muted-foreground">({totalReviews})</span>
+            </div>
+          </div>
+          <motion.button
+            whileTap={{ scale: 0.96 }}
+            onClick={handleAddToCart}
+            disabled={!product.inStock}
+            className="flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/30 disabled:opacity-50"
+          >
+            <ShoppingCart className="size-4" />
+            اشتر الآن
+          </motion.button>
+        </div>
+      </div>
+    </div>
+  );
+}

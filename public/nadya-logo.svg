@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200" width="600" height="200">
+  <defs>
+    <linearGradient id="flowerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E8A0BF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#BA94B5;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#BA94B5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#C9A9C6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Flower icon -->
+  <g transform="translate(85, 100)">
+    <!-- Leaves -->
+    <ellipse cx="-42" cy="28" rx="22" ry="10" fill="url(#leafGrad)" transform="rotate(-30 -42 28)" opacity="0.85"/>
+    <ellipse cx="-36" cy="-22" rx="20" ry="9" fill="url(#leafGrad)" transform="rotate(25 -36 -22)" opacity="0.75"/>
+
+    <!-- Petals -->
+    <ellipse cx="0" cy="-24" rx="13" ry="20" fill="url(#flowerGrad)" opacity="0.9"/>
+    <ellipse cx="23" cy="-8" rx="13" ry="20" fill="url(#flowerGrad)" transform="rotate(72 23 -8)" opacity="0.85"/>
+    <ellipse cx="14" cy="18" rx="13" ry="20" fill="url(#flowerGrad)" transform="rotate(144 14 18)" opacity="0.9"/>
+    <ellipse cx="-14" cy="18" rx="13" ry="20" fill="url(#flowerGrad)" transform="rotate(216 -14 18)" opacity="0.85"/>
+    <ellipse cx="-23" cy="-8" rx="13" ry="20" fill="url(#flowerGrad)" transform="rotate(288 -23 -8)" opacity="0.9"/>
+
+    <!-- Center -->
+    <circle cx="0" cy="0" r="7" fill="#FDF6F0" opacity="0.95"/>
+    <circle cx="0" cy="0" r="4" fill="#E8A0BF"/>
+    <circle cx="-2" cy="-1" r="1.5" fill="#F5E1E8"/>
+  </g>
+
+  <!-- Brand name -->
+  <text x="165" y="108" font-family="Georgia, 'Times New Roman', serif" font-size="56" font-weight="bold" fill="#E8A0BF" letter-spacing="1">Nadya</text>
+  <text x="165" y="138" font-family="Georgia, 'Times New Roman', serif" font-size="22" fill="#BA94B5" letter-spacing="8" font-style="italic">ندية</text>
+
+  <!-- Underline flourish -->
+  <path d="M 165 150 Q 310 160 430 150" stroke="#E8A0BF" stroke-width="1.5" fill="none" opacity="0.5"/>
+</svg>
