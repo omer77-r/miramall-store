@@ -8,7 +8,7 @@ import { HelpCircle, MessageCircle } from "lucide-react";
 export const metadata: Metadata = constructMetadata({
   title: "الأسئلة الشائعة",
   description:
-    "إجابات على الأسئلة الشائعة حول التسوق من ندية: الطلبات، الشحن، الدفع، الإرجاع، والحساب. كل ما تحتاج معرفته عن التسوق من متجر ندية.",
+    "إجابات على الأسئلة الشائعة حول التسوق من ميرا مول: الطلبات، الشحن، الدفع، الإرجاع، والحساب. كل ما تحتاج معرفته عن التسوق من متجر ميرا مول.",
 });
 
 const categoryNameMap = Object.fromEntries(
@@ -19,7 +19,7 @@ export default function FaqPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-rose-100 via-beige-50 to-rose-50 py-20 md:py-28">
+      <section className="relative bg-gradient-to-br from-primary/5 via-secondary to-primary/5 py-20 md:py-28">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(232,160,191,0.15),transparent_60%)]" />
         <div className="container mx-auto px-4 relative">
           <div className="mx-auto max-w-3xl text-center">
@@ -34,11 +34,11 @@ export default function FaqPage() {
                   معرفته
                 </span>
               </span>
-              عن ندية
+              عن ميرا مول
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground md:text-xl">
               إجابات سريعة على الأسئلة الأكثر شيوعاً حول التسوق، الشحن، الدفع،
-              الإرجاع وكل ما يتعلق بتجربتك مع ندية.
+              الإرجاع وكل ما يتعلق بتجربتك مع ميرا مول.
             </p>
           </div>
         </div>

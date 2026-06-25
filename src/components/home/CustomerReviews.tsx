@@ -6,8 +6,8 @@ import { getLatestReviews } from "@/lib/data/reviews";
 import { cn } from "@/lib/utils";
 
 const avatarColors = [
-  "bg-rose-100 text-rose-600",
-  "bg-pink-100 text-pink-600",
+  "bg-primary/10 text-primary",
+  "bg-accent/15 text-accent",
   "bg-amber-100 text-amber-600",
   "bg-purple-100 text-purple-600",
   "bg-sky-100 text-sky-600",
@@ -44,7 +44,7 @@ export default function CustomerReviews() {
           </div>
           <h2 className="text-3xl lg:text-4xl font-bold text-foreground">آراء العملاء</h2>
           <p className="mt-3 text-muted-foreground max-w-lg mx-auto">
-            شهادات حقيقية من زبناء ثقتهم فندية. رضاكم هو غايتنا
+            شهادات حقيقية من زبناء ثقتهم فميرا مول. رضاكم هو غايتنا
           </p>
         </motion.div>
 
@@ -57,7 +57,7 @@ export default function CustomerReviews() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.08 }}
-              className="bg-muted/50 rounded-2xl p-5 sm:p-6 border border-border hover:shadow-lg hover:shadow-rose-50 hover:border-primary/10 transition-all duration-300"
+              className="bg-muted/50 rounded-2xl p-5 sm:p-6 border border-border hover:shadow-lg hover:shadow-primary/5 hover:border-primary/10 transition-all duration-300"
             >
               {/* Stars */}
               <div className="flex items-center gap-0.5 mb-3">
@@ -74,7 +74,7 @@ export default function CustomerReviews() {
 
               {/* Comment */}
               <p className="text-sm text-foreground leading-relaxed line-clamp-4 mb-4">
-                "{review.comment}"
+                &ldquo;{review.comment}&rdquo;
               </p>
 
               {/* User */}

@@ -40,7 +40,7 @@ export default function TrustStrip() {
         <motion.div
           className="flex gap-0"
           animate={{ x: [0, -800, 0] }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" as const }}
         >
           {[...badges, ...badges].map((badge, i) => (
             <div

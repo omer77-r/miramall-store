@@ -2,14 +2,12 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowLeft, Star, ShoppingBag, Sparkles } from "lucide-react";
+import { ArrowLeft, Star, Sparkles, ShoppingBag } from "lucide-react";
 import { getNewArrivals } from "@/lib/data/products";
-import { useCart } from "@/components/providers/CartProvider";
 import { cn } from "@/lib/utils";
 
 export default function NewArrivalsSection() {
   const products = getNewArrivals(8);
-  const { addItem } = useCart();
 
   return (
     <section className="py-16 lg:py-20 bg-white">
@@ -30,7 +28,7 @@ export default function NewArrivalsSection() {
           </div>
           <motion.div whileHover={{ x: -4 }} transition={{ duration: 0.2 }}>
             <Link
-              href="/products?filter=new"
+              href="/shop?filter=new"
               className="inline-flex items-center gap-1.5 text-primary font-medium hover:underline"
             >
               عرض الكل
@@ -48,7 +46,7 @@ export default function NewArrivalsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group relative bg-white rounded-2xl border border-border overflow-hidden hover:shadow-xl hover:shadow-rose-100/40 hover:border-primary/20 transition-all duration-300"
+              className="group relative bg-white rounded-2xl border border-border overflow-hidden hover:shadow-xl hover:shadow-primary/15 hover:border-primary/20 transition-all duration-300"
             >
               {/* New badge */}
               <div className="absolute top-3 right-3 z-10">
@@ -108,19 +106,19 @@ export default function NewArrivalsSection() {
                   )}
                 </div>
 
-                {/* Add to cart */}
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => addItem({ productId: product.id, quantity: 1, product })}
+                {/* Order button */}
+                <Link
+                  href={`/products/${product.slug}#order-form`}
                   className="w-full flex items-center justify-center gap-1.5 bg-primary text-primary-foreground rounded-xl py-2 sm:py-2.5 font-medium text-xs sm:text-sm hover:bg-primary/90 transition-colors"
                 >
                   <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  أضف للسلة
-                </motion.button>
+                  اطلب الآن
+                </Link>
               </div>
             </motion.div>
           ))}
         </div>
+
       </div>
     </section>
   );

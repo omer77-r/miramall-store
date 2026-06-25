@@ -6,7 +6,6 @@ import {
   MapPin,
   Clock,
   Banknote,
-  Package,
   ShieldCheck,
   Smartphone,
 } from "lucide-react";
@@ -14,14 +13,14 @@ import {
 export const metadata: Metadata = constructMetadata({
   title: "الشحن والتوصيل",
   description:
-    "معلومات الشحن والتوصيل من ندية. توصيل سريع لجميع مدن المغرب خلال 2-5 أيام. توصيل مجاني للطلبات فوق 400 درهم. الدفع عند الاستلام.",
+    "معلومات الشحن والتوصيل من ميرا مول. توصيل سريع لجميع مدن المغرب خلال 2-5 أيام. توصيل مجاني للطلبات فوق 349 درهم. الدفع عند الاستلام.",
 });
 
 export default function ShippingPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-rose-100 via-beige-50 to-rose-50 py-20 md:py-28">
+      <section className="relative bg-gradient-to-br from-primary/5 via-secondary to-primary/5 py-20 md:py-28">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(232,160,191,0.15),transparent_60%)]" />
         <div className="container mx-auto px-4 relative">
           <div className="mx-auto max-w-3xl text-center">
@@ -176,7 +175,7 @@ export default function ShippingPage() {
                       مجاناً
                     </div>
                     <p className="text-sm font-semibold text-foreground">
-                      للطلبات فوق 400 درهم
+                       للطلبات فوق 349 درهم
                     </p>
                     <p className="mt-1 text-xs text-muted-foreground">
                       توصيل مجاني لباب المنزل
@@ -187,7 +186,7 @@ export default function ShippingPage() {
                       39 درهم
                     </div>
                     <p className="text-sm font-semibold text-foreground">
-                      للطلبات أقل من 400 درهم
+                       للطلبات أقل من 349 درهم
                     </p>
                     <p className="mt-1 text-xs text-muted-foreground">
                       رسم توصيل ثابت لجميع المدن
@@ -196,7 +195,7 @@ export default function ShippingPage() {
                 </div>
                 <p>
                   رسوم التوصيل ثابتة وموحدة لجميع مدن المغرب. نشجعكم على الاستفادة
-                  من التوصيل المجاني بجمع مشترياتكم لتصل إلى 400 درهم.
+                   من التوصيل المجاني بجمع مشترياتكم لتصل إلى 349 درهم.
                 </p>
               </div>
             </div>

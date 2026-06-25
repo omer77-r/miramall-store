@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { constructMetadata } from "@/lib/metadata";
-import { cn } from "@/lib/utils";
 import {
   ShoppingBag,
   Users,
@@ -20,7 +18,7 @@ import {
 export const metadata: Metadata = constructMetadata({
   title: "من نحن",
   description:
-    "تعرف على ندية، متجر التسوق الأول في المغرب. نقدم منتجات متميزة بجودة عالية مع توصيل لجميع مدن المغرب والدفع عند الاستلام.",
+    "تعرف على ميرا مول، متجر التسوق الأول في المغرب. نقدم منتجات متميزة بجودة عالية مع توصيل لجميع مدن المغرب والدفع عند الاستلام.",
 });
 
 const stats = [
@@ -75,7 +73,7 @@ export default function AboutPage() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-rose-100 via-beige-50 to-rose-50 py-24 md:py-32">
+      <section className="relative bg-gradient-to-br from-primary/5 via-secondary to-primary/5 py-24 md:py-32">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(232,160,191,0.15),transparent_60%)]" />
         <div className="container mx-auto px-4 relative">
           <div className="mx-auto max-w-3xl text-center">
@@ -87,13 +85,13 @@ export default function AboutPage() {
               قصة
               <span className="relative mx-2 inline-block">
                 <span className="relative z-10 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                  ندية
+                  ميرا مول
                 </span>
               </span>
               بدأت بشغف
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground md:text-xl">
-              من قلب المغرب، بدأت رحلة ندية بهدف بسيط: جعل التسوق تجربة سهلة، آمنة،
+              من قلب المغرب، بدأت رحلة ميرا مول بهدف بسيط: جعل التسوق تجربة سهلة، آمنة،
               وممتعة لكل مغربي ومغربية. نؤمن بأن الجمال والجودة حق للجميع.
             </p>
           </div>
@@ -111,7 +109,7 @@ export default function AboutPage() {
                     <ShoppingBag className="size-10 text-primary" />
                   </div>
                   <p className="font-heading text-3xl font-bold text-primary">
-                    ندية
+                    ميرا مول
                   </p>
                   <p className="mt-2 text-sm text-muted-foreground">
                     متجر التسوق الأول في المغرب
@@ -129,7 +127,7 @@ export default function AboutPage() {
               </h2>
               <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>
-                  تأسست ندية انطلاقاً من رؤية واضحة: تقديم منتجات متميزة للمستهلك
+                  تأسست ميرا مول انطلاقاً من رؤية واضحة: تقديم منتجات متميزة للمستهلك
                   المغربي مع تجربة تسوق استثنائية. بدأنا من الصفر، بإيمان راسخ بأن
                   الجودة والثقة هما مفتاح النجاح.
                 </p>
@@ -213,13 +211,13 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Why Choose Nadya */}
+      {/* Why Choose Mira Mall */}
       <section className="py-20 md:py-28">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-5xl">
             <div className="mb-16 text-center">
               <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
-                لماذا ندية؟
+                لماذا ميرا مول؟
               </div>
               <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
                 أسباب تميزنا عن غيرنا
@@ -260,7 +258,7 @@ export default function AboutPage() {
                 أرقامنا
               </div>
               <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
-                ندية في أرقام
+                ميرا مول في أرقام
               </h2>
             </div>
 
@@ -322,7 +320,7 @@ export default function AboutPage() {
 
             <div className="mt-12 text-center">
               <p className="mb-6 text-muted-foreground">
-                نبحث دائماً عن المواهب الشغوفة للانضمام إلى فريق ندية
+                نبحث دائماً عن المواهب الشغوفة للانضمام إلى فريق ميرا مول
               </p>
               <Link
                 href="/contact"
@@ -339,7 +337,7 @@ export default function AboutPage() {
       <section className="bg-muted py-16">
         <div className="container mx-auto px-4 text-center">
           <h2 className="mb-4 font-heading text-2xl font-bold text-foreground md:text-3xl">
-            ابدأ رحلة التسوق مع ندية اليوم
+            ابدأ رحلة التسوق مع ميرا مول اليوم
           </h2>
           <p className="mb-8 text-muted-foreground">
             استمتع بأفضل المنتجات مع توصيل سريع ودفع عند الاستلام

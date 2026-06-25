@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 
 const siteConfig = {
-  name: "ندية",
-  nameAr: "ندية",
-  url: "https://nadya.ma",
-  ogImage: "https://nadya.ma/og-image.jpg",
+  name: "ميرا مول",
+  nameAr: "ميرا مول",
+  url: "https://miramall.ma",
+  ogImage: "https://miramall.ma/og-image.jpg",
   description:
-    "تسوق أفضل المنتجات من ندية. توصيل سريع لجميع مدن المغرب. الدفع عند الاستلام. ملابس، إلكترونيات، أدوات منزلية والمزيد.",
+    "تسوق أفضل المنتجات من ميرا مول. توصيل سريع لجميع مدن المغرب. الدفع عند الاستلام. ملابس، إلكترونيات، أدوات منزلية والمزيد.",
   keywords:
-    "ندية, متجر إلكتروني, المغرب, الدفع عند الاستلام, تسوق, ملابس, إلكترونيات, أدوات منزلية, توصيل, COD, Nadya, Morocco, ecommerce, online shopping",
+    "ميرا مول, متجر إلكتروني, المغرب, الدفع عند الاستلام, تسوق, ملابس, إلكترونيات, أدوات منزلية, توصيل, COD, Mira Mall, Morocco, ecommerce, online shopping",
 };
 
 export function constructMetadata({

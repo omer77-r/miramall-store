@@ -56,12 +56,12 @@ export default function FeaturedCategories() {
             const Icon = iconMap[cat.icon] || Sparkles;
             return (
               <motion.div key={cat.id} {...item}>
-                <Link href={`/products?category=${cat.slug}`}>
+                <Link href={`/shop?category=${cat.slug}`}>
                   <motion.div
                     whileHover={{ scale: 1.03, y: -4 }}
                     transition={{ duration: 0.25 }}
                     className={cn(
-                      "group relative flex flex-col items-center gap-4 p-6 sm:p-8 rounded-2xl bg-white border border-border shadow-sm hover:shadow-xl hover:shadow-rose-100/50 hover:border-primary/30 transition-all duration-300 overflow-hidden"
+                      "group relative flex flex-col items-center gap-4 p-6 sm:p-8 rounded-2xl bg-white border border-border shadow-sm hover:shadow-xl hover:shadow-primary/15 hover:border-primary/30 transition-all duration-300 overflow-hidden"
                     )}
                   >
                     {/* Background glow on hover */}

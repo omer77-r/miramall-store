@@ -14,15 +14,11 @@ import {
   ChevronLeft,
   Truck,
   ShieldCheck,
-  RotateCcw,
-  MessageCircle,
-  ThumbsUp,
   ChevronDown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Product, Review } from "@/lib/types";
 import { getProductReviews, getRelatedProducts, products } from "@/lib/data/products";
-import { useCart } from "@/components/providers/CartProvider";
 import { ProductCard } from "@/components/product/ProductCard";
 
 interface ProductPageClientProps {
@@ -72,12 +68,14 @@ function ReviewCard({ review }: { review: Review }) {
 }
 
 export function ProductPageClient({ product }: ProductPageClientProps) {
-  const { addItem } = useCart();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [reviewFilter, setReviewFilter] = useState<number | null>(null);
   const [showAllReviews, setShowAllReviews] = useState(false);
+  const [formData, setFormData] = useState({ fullName: "", phone: "", city: "", address: "" });
+  const [orderSubmitted, setOrderSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const productReviews = useMemo(() => getProductReviews(product.id), [product.id]);
   const relatedProducts = useMemo(() => getRelatedProducts(product.id, 8), [product.id]);
@@ -95,13 +93,23 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
     return { star, count, pct };
   });
 
-  const handleAddToCart = () => {
-    addItem({ productId: product.id, quantity, product });
-  };
+  const handleSubmitOrder = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
 
-  const handleWhatsAppOrder = () => {
-    const message = `مرحباً، أريد طلب:\n${product.nameAr}\nالكمية: ${quantity}\nالسعر: ${product.price * quantity} درهم`;
-    window.open(`https://wa.me/212600000000?text=${encodeURIComponent(message)}`, "_blank");
+    const order = {
+      product: product.nameAr,
+      slug: product.slug,
+      quantity,
+      price: product.price * quantity,
+      ...formData,
+      date: new Date().toISOString(),
+    };
+    console.log("📦 طلب جديد:", order);
+
+    await new Promise((r) => setTimeout(r, 1000));
+    setIsSubmitting(false);
+    setOrderSubmitted(true);
   };
 
   const scrollRelated = (dir: "left" | "right") => {
@@ -280,44 +288,114 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
               </div>
             </div>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col gap-3">
-              <motion.button
-                whileTap={{ scale: 0.98 }}
-                onClick={handleAddToCart}
-                disabled={!product.inStock}
-                className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#E8A0BF] py-3.5 text-base font-bold text-white shadow-lg shadow-primary/25 hover:bg-[#d48dac] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <ShoppingCart className="size-5" />
-                أضف إلى السلة
-              </motion.button>
-              <motion.button
-                whileTap={{ scale: 0.98 }}
-                onClick={handleWhatsAppOrder}
-                className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-[#25D366] py-3.5 text-base font-bold text-[#25D366] hover:bg-[#25D366]/5 transition-colors"
-              >
-                <MessageCircle className="size-5" />
-                اطلب عبر واتساب
-              </motion.button>
-            </div>
-
-            {/* COD Info */}
-            <div className="rounded-xl border border-emerald-200 bg-emerald-50/50 p-4 dark:border-emerald-800 dark:bg-emerald-950/20">
-              <div className="flex items-center gap-2 mb-1.5">
-                <ShieldCheck className="size-5 text-emerald-600 dark:text-emerald-400" />
-                <span className="font-bold text-emerald-700 dark:text-emerald-300">الدفع عند الاستلام متاح ✓</span>
+            {/* Order Form - Direct */}
+            {orderSubmitted ? (
+              <div className="rounded-2xl bg-emerald-50 border border-emerald-200 p-6 text-center">
+                <div className="mx-auto size-14 rounded-full bg-emerald-100 flex items-center justify-center mb-3">
+                  <Check className="size-7 text-emerald-600" />
+                </div>
+                <h3 className="text-lg font-bold text-emerald-800 mb-1">تم استلام طلبك! 🎉</h3>
+                <p className="text-sm text-emerald-600">
+                  شكراً {formData.fullName}، سنتصل بك قريباً على الرقم {formData.phone} لتأكيد الطلب.
+                </p>
               </div>
-              <p className="text-sm text-muted-foreground">لا تدفع حتى تستلم طلبك وتتأكد من جودته. متاح في جميع مدن المغرب.</p>
-            </div>
+            ) : (
+              <form id="order-form" onSubmit={handleSubmitOrder} className="rounded-2xl border border-border bg-card p-5 space-y-3">
+                <h3 className="font-bold text-foreground text-base flex items-center gap-2">
+                  <ShoppingCart className="size-5 text-primary" />
+                  إتمام الطلب
+                </h3>
 
-            {/* Delivery Info */}
-            <div className="flex items-center gap-3 rounded-xl border border-border bg-muted/20 p-4">
-              <Truck className="size-5 text-primary shrink-0" />
-              <div>
-                <p className="font-semibold text-sm">توصيل سريع لجميع مدن المغرب 🚚</p>
-                <p className="text-xs text-muted-foreground mt-0.5">التوصيل خلال 2-5 أيام عمل. التوصيل مجاني للطلبات فوق 300 درهم.</p>
-              </div>
-            </div>
+                {/* Product Summary */}
+                <div className="bg-muted/50 rounded-xl px-4 py-2.5 flex items-center justify-between">
+                  <span className="text-sm text-foreground font-medium">{product.nameAr} <span className="text-muted-foreground">×{quantity}</span></span>
+                  <span className="text-sm font-bold text-primary">{product.price * quantity} درهم</span>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-1">الاسم الكامل</label>
+                  <input
+                    type="text" required
+                    placeholder="مثال: أحمد بنعلي"
+                    value={formData.fullName}
+                    onChange={(e) => setFormData((f) => ({ ...f, fullName: e.target.value }))}
+                    className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                    dir="rtl"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-1">رقم الهاتف</label>
+                  <input
+                    type="tel" required
+                    placeholder="مثال: 0612345678"
+                    value={formData.phone}
+                    onChange={(e) => setFormData((f) => ({ ...f, phone: e.target.value }))}
+                    className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                    dir="rtl"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-1">المدينة</label>
+                  <input
+                    type="text" required
+                    placeholder="مثال: الدار البيضاء"
+                    value={formData.city}
+                    onChange={(e) => setFormData((f) => ({ ...f, city: e.target.value }))}
+                    className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                    dir="rtl"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-1">العنوان الكامل</label>
+                  <textarea
+                    required rows={2}
+                    placeholder="مثال: حي السلام، شارع الحسن الثاني، رقم 12"
+                    value={formData.address}
+                    onChange={(e) => setFormData((f) => ({ ...f, address: e.target.value }))}
+                    className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all resize-none"
+                    dir="rtl"
+                  />
+                </div>
+
+                {/* COD + Delivery */}
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 rounded-xl bg-emerald-50 border border-emerald-200 p-3">
+                    <ShieldCheck className="size-4 text-emerald-600 shrink-0" />
+                    <span className="text-xs text-emerald-700 font-medium">الدفع عند الاستلام - توصيل لجميع مدن المغرب</span>
+                  </div>
+                  <div className="flex items-center gap-2 rounded-xl bg-muted/30 border border-border p-3">
+                    <Truck className="size-4 text-primary shrink-0" />
+                    <span className="text-xs text-muted-foreground">التوصيل خلال 2-5 أيام عمل</span>
+                  </div>
+                </div>
+
+                <motion.button
+                  type="submit"
+                  disabled={isSubmitting}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-primary py-3 text-sm font-bold text-white shadow-lg shadow-primary/25 hover:bg-primary/90 transition-colors disabled:opacity-60"
+                >
+                  {isSubmitting ? (
+                    <span className="flex items-center gap-2">
+                      <svg className="animate-spin size-4" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      جاري تأكيد الطلب...
+                    </span>
+                  ) : (
+                    <>
+                      <ShoppingCart className="size-4" />
+                      تأكيد الطلب (الدفع عند الاستلام)
+                    </>
+                  )}
+                </motion.button>
+              </form>
+            )}
+
           </div>
         </div>
 
@@ -487,16 +565,19 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
                 <span className="text-lg font-bold">
                   {product.price + frequentlyBought.slice(0, 3).reduce((sum, p) => sum + p.price, 0)} درهم
                 </span>
-                <button className="rounded-xl bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground hover:bg-primary/90 transition-colors">
-                  أضف الكل للسلة
-                </button>
+                <a
+                  href="#order-form"
+                  className="rounded-xl bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground hover:bg-primary/90 transition-colors inline-flex items-center justify-center"
+                >
+                  اطلب الآن
+                </a>
               </div>
             </div>
           </motion.section>
         )}
       </div>
 
-      {/* Mobile Sticky Buy Button */}
+      {/* Mobile Sticky - Scroll to form */}
       <div className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-card/95 backdrop-blur-md p-3 lg:hidden">
         <div className="flex items-center gap-3">
           <div className="flex-1 min-w-0">
@@ -511,15 +592,14 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
               <span className="text-xs text-muted-foreground">({totalReviews})</span>
             </div>
           </div>
-          <motion.button
+          <motion.a
             whileTap={{ scale: 0.96 }}
-            onClick={handleAddToCart}
-            disabled={!product.inStock}
-            className="flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/30 disabled:opacity-50"
+            href="#order-form"
+            className="flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/30"
           >
             <ShoppingCart className="size-4" />
-            اشتر الآن
-          </motion.button>
+            اطلب الآن
+          </motion.a>
         </div>
       </div>
     </div>

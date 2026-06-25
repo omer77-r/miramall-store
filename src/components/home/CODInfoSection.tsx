@@ -30,7 +30,7 @@ export default function CODInfoSection() {
   return (
     <section className="relative py-16 lg:py-24 overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-muted via-rose-50/40 to-muted" />
+      <div className="absolute inset-0 bg-gradient-to-b from-muted via-primary/5 to-muted" />
 
       {/* Decorative element */}
       <motion.div
@@ -54,7 +54,7 @@ export default function CODInfoSection() {
           </div>
           <h2 className="text-3xl lg:text-4xl font-bold text-foreground">لماذا الدفع عند الاستلام؟</h2>
           <p className="mt-4 text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            في ندية، راحتك وأمانك هوما الأولوية. نظام الدفع عند الاستلام كيضمن ليك تجربة تسوق مريحة وآمنة 100٪
+            في ميرا مول، راحتك وأمانك هوما الأولوية. نظام الدفع عند الاستلام كيضمن ليك تجربة تسوق مريحة وآمنة 100٪
           </p>
         </motion.div>
 
@@ -68,7 +68,7 @@ export default function CODInfoSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.12 }}
               whileHover={{ y: -6 }}
-              className="group relative bg-white rounded-2xl p-6 sm:p-7 border border-border shadow-sm hover:shadow-xl hover:shadow-rose-100/30 hover:border-primary/20 transition-all duration-300"
+              className="group relative bg-white rounded-2xl p-6 sm:p-7 border border-border shadow-sm hover:shadow-xl hover:shadow-primary/10 hover:border-primary/20 transition-all duration-300"
             >
               {/* Icon */}
               <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">

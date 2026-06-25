@@ -7,7 +7,6 @@ import { motion } from "framer-motion";
 import { Eye, Heart, ShoppingCart, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Product } from "@/lib/types";
-import { useCart } from "@/components/providers/CartProvider";
 
 interface ProductCardProps {
   product: Product;
@@ -15,15 +14,8 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, variant = "default" }: ProductCardProps) {
-  const { addItem } = useCart();
   const [imgSrc, setImgSrc] = useState(product.images[0]);
   const [isLiked, setIsLiked] = useState(false);
-
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    addItem({ productId: product.id, quantity: 1, product });
-  };
 
   const discountPercent = product.discount
     ? `-${product.discount}%`
@@ -68,12 +60,12 @@ export function ProductCard({ product, variant = "default" }: ProductCardProps) 
                 <span className="text-xs text-muted-foreground line-through">{product.originalPrice} درهم</span>
               )}
             </div>
-            <button
-              onClick={handleAddToCart}
-              className="rounded-lg bg-primary p-1.5 text-primary-foreground hover:bg-primary/90 transition-colors"
+            <Link
+              href={`/products/${product.slug}#order-form`}
+              className="rounded-lg bg-primary p-1.5 text-primary-foreground hover:bg-primary/90 transition-colors inline-flex"
             >
               <ShoppingCart className="size-4" />
-            </button>
+            </Link>
           </div>
         </div>
       </motion.div>
@@ -126,6 +118,7 @@ export function ProductCard({ product, variant = "default" }: ProductCardProps) 
   }
 
   return (
+    <>
     <motion.div
       whileHover={{ y: -6 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -203,14 +196,15 @@ export function ProductCard({ product, variant = "default" }: ProductCardProps) 
             )}
           </div>
         </div>
-        <button
-          onClick={handleAddToCart}
+        <Link
+          href={`/products/${product.slug}#order-form`}
           className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors active:scale-[0.98]"
         >
           <ShoppingCart className="size-4" />
-          أضف للسلة
-        </button>
+          اطلب الآن
+        </Link>
       </div>
     </motion.div>
+    </>
   );
 }

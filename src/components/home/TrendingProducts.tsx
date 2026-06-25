@@ -4,12 +4,10 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft, Star, ShoppingBag, Flame } from "lucide-react";
 import { getTrending } from "@/lib/data/products";
-import { useCart } from "@/components/providers/CartProvider";
 import { cn } from "@/lib/utils";
 
 export default function TrendingProducts() {
   const products = getTrending(6);
-  const { addItem } = useCart();
 
   return (
     <section className="py-16 lg:py-20 bg-white">
@@ -30,7 +28,7 @@ export default function TrendingProducts() {
           </div>
           <motion.div whileHover={{ x: -4 }} transition={{ duration: 0.2 }}>
             <Link
-              href="/products"
+              href="/shop"
               className="inline-flex items-center gap-1.5 text-primary font-medium hover:underline"
             >
               عرض الكل
@@ -42,7 +40,7 @@ export default function TrendingProducts() {
         {/* Scrollable row on mobile, grid on desktop */}
         <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
           {products.map((product, index) => (
-            <ProductCard key={product.id} product={product} index={index} onAddToCart={() => addItem({ productId: product.id, quantity: 1, product })} />
+            <ProductCard key={product.id} product={product} index={index} />
           ))}
         </div>
 
@@ -51,7 +49,7 @@ export default function TrendingProducts() {
           <div className="flex gap-4 pb-4">
             {products.map((product, index) => (
               <div key={product.id} className="w-[280px] shrink-0">
-                <ProductCard product={product} index={index} onAddToCart={() => addItem({ productId: product.id, quantity: 1, product })} />
+                <ProductCard product={product} index={index} />
               </div>
             ))}
           </div>
@@ -64,11 +62,9 @@ export default function TrendingProducts() {
 function ProductCard({
   product,
   index,
-  onAddToCart,
 }: {
   product: ReturnType<typeof getTrending>[number];
   index: number;
-  onAddToCart: () => void;
 }) {
   return (
     <motion.div
@@ -76,7 +72,7 @@ function ProductCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="group relative bg-white rounded-2xl border border-border overflow-hidden hover:shadow-xl hover:shadow-rose-100/40 hover:border-primary/20 transition-all duration-300"
+      className="group relative bg-white rounded-2xl border border-border overflow-hidden hover:shadow-xl hover:shadow-primary/15 hover:border-primary/20 transition-all duration-300"
     >
       {/* Frequently bought badge */}
       <div className="absolute top-3 right-3 z-10">
@@ -138,15 +134,14 @@ function ProductCard({
           )}
         </div>
 
-        {/* Add to cart button */}
-        <motion.button
-          whileTap={{ scale: 0.95 }}
-          onClick={onAddToCart}
+        {/* Order button */}
+        <Link
+          href={`/products/${product.slug}#order-form`}
           className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground rounded-xl py-2.5 font-medium text-sm hover:bg-primary/90 transition-colors"
         >
           <ShoppingBag className="w-4 h-4" />
-          أضف للسلة
-        </motion.button>
+          اطلب الآن
+        </Link>
       </div>
     </motion.div>
   );

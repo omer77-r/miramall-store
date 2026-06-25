@@ -20,7 +20,7 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | null>(null)
 
-const DELIVERY_FEE_THRESHOLD = 499
+const DELIVERY_FEE_THRESHOLD = 349
 const DELIVERY_FEE = 39
 
 export function CartProvider({ children }: { children: ReactNode }) {

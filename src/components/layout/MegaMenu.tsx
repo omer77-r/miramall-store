@@ -3,8 +3,7 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { Sparkles } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { categories, subcategories } from "@/lib/data/categories"
+import { categories, subCategories } from "@/lib/data/categories"
 
 interface MegaMenuProps {
   categoryId: string
@@ -14,7 +13,7 @@ export function MegaMenu({ categoryId }: MegaMenuProps) {
   const category = categories.find((c) => c.id === categoryId)
   if (!category) return null
 
-  const subs = subcategories[categoryId] || []
+  const subs = subCategories[categoryId] || []
 
   return (
     <motion.div
@@ -30,8 +29,8 @@ export function MegaMenu({ categoryId }: MegaMenuProps) {
           <div className="flex-[3]">
             {/* All Categories Link */}
             <Link
-              href={`/category/${category.slug}`}
-              className="inline-flex items-center gap-2 text-rose-600 font-semibold text-lg mb-4 hover:text-rose-700 transition-colors"
+              href={`/shop?category=${category.slug}`}
+              className="inline-flex items-center gap-2 text-primary font-semibold text-lg mb-4 hover:text-primary/80 transition-colors"
             >
               <Sparkles className="h-4 w-4" />
               {category.nameAr}
@@ -42,8 +41,8 @@ export function MegaMenu({ categoryId }: MegaMenuProps) {
               {subs.map((sub: { id: string; nameAr: string }) => (
                 <Link
                   key={sub.id}
-                  href={`/category/${category.slug}/${sub.id}`}
-                  className="text-sm text-zinc-600 hover:text-rose-600 hover:bg-rose-50 rounded-lg px-3 py-2 transition-colors"
+                  href={`/shop?category=${category.slug}`}
+                  className="text-sm text-foreground/70 hover:text-primary hover:bg-primary/5 rounded-lg px-3 py-2 transition-colors"
                 >
                   {sub.nameAr}
                 </Link>
@@ -52,24 +51,24 @@ export function MegaMenu({ categoryId }: MegaMenuProps) {
           </div>
 
           {/* Featured Area */}
-          <div className="flex-[2] bg-gradient-to-br from-rose-50 to-pink-50 rounded-2xl p-6 border border-rose-100/50">
-            <div className="aspect-[4/3] bg-gradient-to-br from-rose-200 to-pink-200 rounded-xl mb-4 flex items-center justify-center">
-              <Sparkles className="h-12 w-12 text-rose-400" />
+          <div className="flex-[2] bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-6 border border-primary/10">
+            <div className="aspect-[4/3] bg-gradient-to-br from-primary/20 to-accent/20 rounded-xl mb-4 flex items-center justify-center">
+              <Sparkles className="h-12 w-12 text-primary/50" />
             </div>
-            <h4 className="font-semibold text-zinc-800 mb-1">
-              اكتشفي {category.nameAr}
+            <h4 className="font-semibold text-foreground mb-1">
+              اكتشف {category.nameAr}
             </h4>
-            <p className="text-sm text-zinc-500 mb-3">
+            <p className="text-sm text-muted-foreground mb-3">
               {category.descriptionAr}
             </p>
             <Link
-              href={`/category/${category.slug}`}
-              className="inline-flex items-center text-sm font-medium text-rose-600 hover:text-rose-700 transition-colors"
+              href={`/shop?category=${category.slug}`}
+              className="inline-flex items-center text-sm font-medium text-primary hover:text-primary/80 transition-colors"
             >
-              تسوقي الآن
+              تسوق الآن
               <span className="mr-1">←</span>
             </Link>
-            <div className="mt-4 flex items-center gap-4 text-xs text-zinc-400">
+            <div className="mt-4 flex items-center gap-4 text-xs text-muted-foreground">
               <span>{category.productCount}+ منتج</span>
             </div>
           </div>

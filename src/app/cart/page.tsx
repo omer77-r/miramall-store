@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { CartPageClient } from "@/components/cart/CartPageClient";
 
 export const metadata: Metadata = {
-  title: "سلة التسوق | ندية",
+  title: "سلة التسوق | ميرا مول",
   description: "راجع المنتجات في سلة التسوق وأكمل طلبك. الدفع عند الاستلام متاح.",
   openGraph: {
-    title: "سلة التسوق | ندية",
+    title: "سلة التسوق | ميرا مول",
     description: "راجع المنتجات في سلة التسوق وأكمل طلبك.",
     locale: "ar_MA",
     type: "website",

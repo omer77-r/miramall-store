@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/", "/admin/"],
     },
-    sitemap: "https://nadya.ma/sitemap.xml",
+    sitemap: "https://miramall.ma/sitemap.xml",
   };
 }

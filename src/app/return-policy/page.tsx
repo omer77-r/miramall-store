@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { constructMetadata } from "@/lib/metadata";
 import {
   RotateCcw,
@@ -13,14 +12,14 @@ import {
 export const metadata: Metadata = constructMetadata({
   title: "سياسة الإرجاع",
   description:
-    "سياسة الإرجاع والاستبدال لمتجر ندية. يمكنك إرجاع المنتجات خلال 14 يوماً. شروط سهلة وشفافة. تعرف على كيفية إرجاع منتجك واسترداد أموالك.",
+    "سياسة الإرجاع والاستبدال لمتجر ميرا مول. يمكنك إرجاع المنتجات خلال 14 يوماً. شروط سهلة وشفافة. تعرف على كيفية إرجاع منتجك واسترداد أموالك.",
 });
 
 export default function ReturnPolicyPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-rose-100 via-beige-50 to-rose-50 py-20 md:py-28">
+      <section className="relative bg-gradient-to-br from-primary/5 via-secondary to-primary/5 py-20 md:py-28">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_50%,rgba(232,160,191,0.15),transparent_60%)]" />
         <div className="container mx-auto px-4 relative">
           <div className="mx-auto max-w-3xl text-center">
@@ -61,7 +60,7 @@ export default function ReturnPolicyPage() {
               </div>
               <div className="space-y-4 leading-relaxed text-muted-foreground">
                 <p>
-                  في ندية، نحرص على رضاكم التام عن مشترياتكم. إذا لم تكونوا
+                  في ميرا مول، نحرص على رضاكم التام عن مشترياتكم. إذا لم تكونوا
                   راضين تماماً عن المنتج الذي استلمتموه، يمكنكم إرجاعه خلال 14
                   يوماً من تاريخ الاستلام.
                 </p>

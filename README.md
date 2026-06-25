@@ -34,3 +34,16 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## DeepSeek API Key
+
+To use DeepSeek features, create a local environment file and add your API key.
+
+1. Copy `.env.local.example` to `.env.local`.
+2. Replace the placeholder with your real key:
+
+```
+DEEPSEEK_API_KEY=your_real_deepseek_api_key_here
+```
+
+Do not commit `.env.local` to source control. Restart the dev server after updating the key.

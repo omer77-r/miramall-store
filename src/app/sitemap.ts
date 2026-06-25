@@ -3,7 +3,7 @@ import { products } from "@/lib/data/products";
 import { categories } from "@/lib/data/categories";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://nadya.ma";
+  const baseUrl = "https://miramall.ma";
 
   const staticPages = [
     {

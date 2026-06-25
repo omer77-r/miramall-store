@@ -13,7 +13,7 @@ export default function SpecialOfferBanner() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-primary via-accent to-rose-300 p-8 sm:p-12 lg:p-14"
+          className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-primary via-accent to-primary/40 p-8 sm:p-12 lg:p-14"
         >
           {/* Animated background shapes */}
           <motion.div
@@ -113,7 +113,7 @@ export default function SpecialOfferBanner() {
               className="shrink-0"
             >
               <Link
-                href="/products?filter=discount"
+                href="/shop"
                 className="inline-flex items-center gap-2 bg-white text-primary rounded-full px-10 py-4 font-bold text-lg shadow-lg hover:shadow-xl transition-shadow"
               >
                 تسوق العروض

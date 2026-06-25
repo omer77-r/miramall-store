@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { constructMetadata } from "@/lib/metadata";
 import {
   Phone,
@@ -16,20 +15,20 @@ import {
 export const metadata: Metadata = constructMetadata({
   title: "تواصل معنا",
   description:
-    "تواصل مع فريق ندية. خدمة عملاء على واتساب. توصيل لجميع مدن المغرب. الدفع عند الاستلام. اتصل بنا الآن لأي استفسار.",
+    "تواصل مع فريق ميرا مول. خدمة عملاء على واتساب. توصيل لجميع مدن المغرب. الدفع عند الاستلام. اتصل بنا الآن لأي استفسار.",
 });
 
 const socialLinks = [
-  { icon: Camera, href: "https://instagram.com/nadya.ma", label: "Instagram" },
-  { icon: Globe, href: "https://facebook.com/nadya.ma", label: "Facebook" },
-  { icon: Heart, href: "https://youtube.com/@nadya.ma", label: "YouTube" },
+  { icon: Camera, href: "https://instagram.com/miramall.ma", label: "Instagram" },
+  { icon: Globe, href: "https://facebook.com/miramall.ma", label: "Facebook" },
+  { icon: Heart, href: "https://youtube.com/@miramall.ma", label: "YouTube" },
 ];
 
 export default function ContactPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-rose-100 via-beige-50 to-rose-50 py-20 md:py-28">
+      <section className="relative bg-gradient-to-br from-primary/5 via-secondary to-primary/5 py-20 md:py-28">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(232,160,191,0.15),transparent_60%)]" />
         <div className="container mx-auto px-4 relative">
           <div className="mx-auto max-w-3xl text-center">
@@ -109,11 +108,11 @@ export default function ContactPage() {
                   <div>
                     <h4 className="font-semibold text-foreground">البريد الإلكتروني</h4>
                     <a
-                      href="mailto:contact@nadya.ma"
+                      href="mailto:contact@miramall.ma"
                       className="text-sm text-muted-foreground transition-colors hover:text-primary"
                       dir="ltr"
                     >
-                      contact@nadya.ma
+                      contact@miramall.ma
                     </a>
                   </div>
                 </div>

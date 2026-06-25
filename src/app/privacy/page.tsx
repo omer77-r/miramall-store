@@ -5,7 +5,7 @@ import { Shield, Lock, Cookie, UserCheck, FileText, Database } from "lucide-reac
 export const metadata: Metadata = constructMetadata({
   title: "سياسة الخصوصية",
   description:
-    "سياسة الخصوصية لمتجر ندية. تعرف على كيفية جمع واستخدام وحماية بياناتك الشخصية عند التسوق من متجرنا.",
+    "سياسة الخصوصية لمتجر ميرا مول. تعرف على كيفية جمع واستخدام وحماية بياناتك الشخصية عند التسوق من متجرنا.",
 });
 
 const sections = [
@@ -15,7 +15,7 @@ const sections = [
     content: (
       <>
         <p className="mb-4">
-          نقوم بجمع المعلومات التالية عند استخدامكم لموقع ندية أو تقديم طلب:
+          نقوم بجمع المعلومات التالية عند استخدامكم لموقع ميرا مول أو تقديم طلب:
         </p>
         <ul className="mb-4 list-inside list-disc space-y-2">
           <li>الاسم الكامل ورقم الهاتف وعنوان التوصيل لإتمام الطلبات.</li>
@@ -129,13 +129,13 @@ const sections = [
         <ul className="mb-4 list-inside list-disc space-y-2">
           <li>الحق في الوصول إلى بياناتكم الشخصية ومعرفة كيفية استخدامها.</li>
           <li>الحق في تصحيح أي بيانات غير دقيقة أو غير مكتملة.</li>
-          <li>الحق في طلب حذف بياناتكم الشخصية ("الحق في النسيان").</li>
+          <li>الحق في طلب حذف بياناتكم الشخصية (&quot;الحق في النسيان&quot;).</li>
           <li>الحق في الاعتراض على معالجة بياناتكم لأغراض التسويق.</li>
           <li>الحق في سحب الموافقة على معالجة البيانات في أي وقت.</li>
         </ul>
         <p>
           لممارسة أي من هذه الحقوق، يرجى التواصل معنا عبر البريد الإلكتروني
-          contact@nadya.ma أو عبر واتساب.
+          contact@miramall.ma أو عبر واتساب.
         </p>
       </>
     ),
@@ -146,7 +146,7 @@ export default function PrivacyPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-rose-100 via-beige-50 to-rose-50 py-20 md:py-28">
+      <section className="relative bg-gradient-to-br from-primary/5 via-secondary to-primary/5 py-20 md:py-28">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_50%,rgba(232,160,191,0.15),transparent_60%)]" />
         <div className="container mx-auto px-4 relative">
           <div className="mx-auto max-w-3xl text-center">
@@ -165,7 +165,7 @@ export default function PrivacyPage() {
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground md:text-xl">
               نلتزم بحماية خصوصيتكم وبياناتكم الشخصية. توضح هذه السياسة كيفية جمع
-              واستخدام وحماية معلوماتكم عند استخدام موقع ندية.
+              واستخدام وحماية معلوماتكم عند استخدام موقع ميرا مول.
             </p>
           </div>
         </div>
@@ -183,12 +183,12 @@ export default function PrivacyPage() {
             {/* Intro */}
             <div className="mb-12 leading-relaxed text-muted-foreground">
               <p className="mb-4">
-                في ندية، ندرك أهمية خصوصيتكم ونلتزم بحماية بياناتكم الشخصية. تشرح
+                في ميرا مول، ندرك أهمية خصوصيتكم ونلتزم بحماية بياناتكم الشخصية. تشرح
                 سياسة الخصوصية هذه كيفية جمعنا واستخدامنا وحمايتنا للمعلومات التي
-                تقدمونها لنا عند استخدامكم لموقع nadya.ma أو خدماتنا.
+                تقدمونها لنا عند استخدامكم لموقع miramall.ma أو خدماتنا.
               </p>
               <p>
-                باستخدامكم لموقع ندية، فإنكم توافقون على الممارسات الموضحة في هذه
+                باستخدامكم لموقع ميرا مول، فإنكم توافقون على الممارسات الموضحة في هذه
                 السياسة. ننصحكم بقراءتها بعناية والتواصل معنا في حال وجود أي
                 استفسارات.
               </p>
@@ -229,10 +229,10 @@ export default function PrivacyPage() {
                 الشخصية.
               </p>
               <a
-                href="mailto:contact@nadya.ma"
+                href="mailto:contact@miramall.ma"
                 className="text-primary underline underline-offset-4 transition-colors hover:text-primary/80"
               >
-                contact@nadya.ma
+                contact@miramall.ma
               </a>
             </div>
           </div>

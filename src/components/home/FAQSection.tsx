@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowLeft, HelpCircle, ChevronLeft } from "lucide-react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@radix-ui/react-accordion";
+import { ArrowLeft, HelpCircle } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { faqs } from "@/lib/data/faq";
 
 export default function FAQSection() {
@@ -12,7 +12,6 @@ export default function FAQSection() {
   return (
     <section className="py-16 lg:py-20 bg-muted/50">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -26,11 +25,10 @@ export default function FAQSection() {
           </div>
           <h2 className="text-3xl lg:text-4xl font-bold text-foreground">عندك سؤال؟ عندنا الجواب</h2>
           <p className="mt-3 text-muted-foreground max-w-lg mx-auto">
-            إجابات على أكثر الأسئلة اللي كاتجينا من زبناء ندية
+            إجابات على أكثر الأسئلة اللي كاتجينا من زبناء ميرا مول
           </p>
         </motion.div>
 
-        {/* Accordion */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -48,18 +46,13 @@ export default function FAQSection() {
               >
                 <AccordionItem
                   value={faq.id}
-                  className="bg-white rounded-2xl border border-border overflow-hidden data-[state=open]:border-primary/30 data-[state=open]:shadow-lg data-[state=open]:shadow-rose-100/30 transition-all duration-300"
+                  className="bg-white rounded-2xl border border-border overflow-hidden data-[state=open]:border-primary/30 data-[state=open]:shadow-lg data-[state=open]:shadow-primary/10 transition-all duration-300"
                 >
-                  <AccordionTrigger className="group flex w-full items-center justify-between gap-4 px-5 py-4 text-right hover:bg-muted/30 transition-colors cursor-pointer">
-                    <span className="font-semibold text-foreground text-sm sm:text-base">
-                      {faq.questionAr}
-                    </span>
-                    <ChevronLeft className="w-5 h-5 text-muted-foreground shrink-0 transition-transform duration-300 group-data-[state=open]:-rotate-90" />
+                  <AccordionTrigger className="px-5 py-4 text-right font-semibold text-foreground text-sm sm:text-base hover:text-primary transition-colors hover:no-underline">
+                    {faq.questionAr}
                   </AccordionTrigger>
-                  <AccordionContent className="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
-                    <div className="px-5 pb-5 pt-1">
-                      <p className="text-sm text-muted-foreground leading-relaxed">{faq.answerAr}</p>
-                    </div>
+                  <AccordionContent className="px-5 pb-5 pt-1">
+                    <p className="text-sm text-muted-foreground leading-relaxed">{faq.answerAr}</p>
                   </AccordionContent>
                 </AccordionItem>
               </motion.div>
@@ -67,7 +60,6 @@ export default function FAQSection() {
           </Accordion>
         </motion.div>
 
-        {/* Link to full FAQ */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

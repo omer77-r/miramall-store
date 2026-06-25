@@ -3,9 +3,9 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, SlidersHorizontal, X, ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
 import type { Product, Category } from "@/lib/types";
 import { ProductCard } from "@/components/product/ProductCard";
+import { ShopFilters } from "@/components/shop/ShopFilters";
 
 interface ShopPageClientProps {
   products: Product[];
@@ -38,16 +38,9 @@ export function ShopPageClient({ products, categories }: ShopPageClientProps) {
       filtered = filtered.filter((p) => selectedCategories.includes(p.category));
     }
 
-    if (minPrice) {
-      filtered = filtered.filter((p) => p.price >= Number(minPrice));
-    }
-    if (maxPrice) {
-      filtered = filtered.filter((p) => p.price <= Number(maxPrice));
-    }
-
-    if (minRating > 0) {
-      filtered = filtered.filter((p) => p.rating >= minRating);
-    }
+    if (minPrice) filtered = filtered.filter((p) => p.price >= Number(minPrice));
+    if (maxPrice) filtered = filtered.filter((p) => p.price <= Number(maxPrice));
+    if (minRating > 0) filtered = filtered.filter((p) => p.rating >= minRating);
 
     switch (sortBy) {
       case "price-asc":
@@ -92,121 +85,38 @@ export function ShopPageClient({ products, categories }: ShopPageClientProps) {
     { value: "rating", label: "التقييم" },
   ];
 
-  const FilterContent = () => (
-    <div className="space-y-6">
-      {/* Search */}
-      <div>
-        <label className="block text-sm font-semibold mb-2">بحث</label>
-        <div className="relative">
-          <Search className="absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
-          <input
-            type="text"
-            placeholder="ابحث عن منتج..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-xl border border-input bg-card pr-10 pl-4 py-2.5 text-sm placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-colors"
-          />
-        </div>
-      </div>
-
-      {/* Categories */}
-      <div>
-        <label className="block text-sm font-semibold mb-3">الفئات</label>
-        <div className="space-y-2">
-          {categories.map((cat) => (
-            <label
-              key={cat.id}
-              className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 hover:bg-muted transition-colors"
-            >
-              <input
-                type="checkbox"
-                checked={selectedCategories.includes(cat.id)}
-                onChange={() => toggleCategory(cat.id)}
-                className="size-4 rounded border-input text-primary focus:ring-primary"
-              />
-              <span className="text-sm">{cat.nameAr}</span>
-              <span className="mr-auto text-xs text-muted-foreground">({cat.productCount})</span>
-            </label>
-          ))}
-        </div>
-      </div>
-
-      {/* Price Range */}
-      <div>
-        <label className="block text-sm font-semibold mb-3">نطاق السعر (درهم)</label>
-        <div className="flex items-center gap-2">
-          <input
-            type="number"
-            placeholder="الحد الأدنى"
-            value={minPrice}
-            onChange={(e) => setMinPrice(e.target.value)}
-            className="w-full rounded-xl border border-input bg-card px-3 py-2 text-sm placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
-          />
-          <span className="text-muted-foreground text-sm">-</span>
-          <input
-            type="number"
-            placeholder="الحد الأقصى"
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(e.target.value)}
-            className="w-full rounded-xl border border-input bg-card px-3 py-2 text-sm placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
-          />
-        </div>
-      </div>
-
-      {/* Rating Filter */}
-      <div>
-        <label className="block text-sm font-semibold mb-3">التقييم</label>
-        <div className="flex flex-wrap gap-2">
-          {[4, 3, 2, 1].map((star) => (
-            <button
-              key={star}
-              onClick={() => setMinRating(minRating === star ? 0 : star)}
-              className={cn(
-                "rounded-full border px-3 py-1.5 text-sm transition-colors",
-                minRating >= star
-                  ? "bg-primary border-primary text-primary-foreground"
-                  : "border-border text-muted-foreground hover:border-primary/50"
-              )}
-            >
-              {star}+ ⭐
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Action Buttons */}
-      <div className="flex gap-2 pt-2">
-        <button
-          onClick={resetFilters}
-          className="flex-1 rounded-xl border border-border py-2.5 text-sm font-medium hover:bg-muted transition-colors"
-        >
-          إعادة تعيين
-        </button>
-      </div>
-    </div>
-  );
+  const filterProps = {
+    search,
+    onSearchChange: setSearch,
+    selectedCategories,
+    onToggleCategory: toggleCategory,
+    minPrice,
+    onMinPriceChange: setMinPrice,
+    maxPrice,
+    onMaxPriceChange: setMaxPrice,
+    minRating,
+    onMinRatingChange: setMinRating,
+    onReset: resetFilters,
+    categories,
+  };
 
   return (
     <div className="bg-background min-h-screen">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-        {/* Page Header */}
         <div className="mb-6">
           <h1 className="text-2xl sm:text-3xl font-bold text-foreground">المتجر</h1>
           <p className="text-muted-foreground mt-1">تصفح جميع منتجاتنا المميزة</p>
         </div>
 
         <div className="flex gap-6">
-          {/* Desktop Sidebar */}
           <aside className="hidden lg:block w-64 shrink-0">
             <div className="sticky top-24 rounded-2xl border border-border bg-card p-5">
               <h2 className="text-lg font-bold mb-4">تصفية المنتجات</h2>
-              <FilterContent />
+              <ShopFilters {...filterProps} />
             </div>
           </aside>
 
-          {/* Main Content */}
           <main className="flex-1 min-w-0">
-            {/* Sort & Count Bar */}
             <div className="flex items-center justify-between mb-5 gap-3">
               <div className="flex items-center gap-2">
                 <h2 className="text-lg font-bold text-foreground">نتائج البحث</h2>
@@ -215,7 +125,6 @@ export function ShopPageClient({ products, categories }: ShopPageClientProps) {
                 </span>
               </div>
               <div className="flex items-center gap-3">
-                {/* Sort Dropdown */}
                 <div className="relative">
                   <select
                     value={sortBy}
@@ -230,7 +139,6 @@ export function ShopPageClient({ products, categories }: ShopPageClientProps) {
                   </select>
                   <ChevronDown className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
                 </div>
-                {/* Mobile Filter Toggle */}
                 <button
                   onClick={() => setMobileFilterOpen(true)}
                   className="lg:hidden rounded-xl border border-border p-2.5 hover:bg-muted transition-colors"
@@ -241,7 +149,6 @@ export function ShopPageClient({ products, categories }: ShopPageClientProps) {
               </div>
             </div>
 
-            {/* Product Grid */}
             {filteredProducts.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-20 text-center">
                 <Search className="size-12 text-muted-foreground mb-4" />
@@ -255,10 +162,7 @@ export function ShopPageClient({ products, categories }: ShopPageClientProps) {
                 </button>
               </div>
             ) : (
-              <motion.div
-                layout
-                className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4"
-              >
+              <motion.div layout className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
                 <AnimatePresence mode="popLayout">
                   {filteredProducts.map((product) => (
                     <motion.div
@@ -279,7 +183,6 @@ export function ShopPageClient({ products, categories }: ShopPageClientProps) {
         </div>
       </div>
 
-      {/* Mobile Filter Drawer */}
       <AnimatePresence>
         {mobileFilterOpen && (
           <>
@@ -307,7 +210,7 @@ export function ShopPageClient({ products, categories }: ShopPageClientProps) {
                 </button>
               </div>
               <div className="p-5 overflow-y-auto" style={{ maxHeight: "calc(100vh - 70px)" }}>
-                <FilterContent />
+                <ShopFilters {...filterProps} />
               </div>
               <div className="absolute inset-x-0 bottom-0 border-t border-border bg-card p-4">
                 <button

@@ -1,7 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Cairo, Playfair_Display } from "next/font/google";
+import { Cairo } from "next/font/google";
 import "./globals.css";
 import { ClientProviders } from "@/components/providers/ClientProviders";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
+import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 
 const cairo = Cairo({
   variable: "--font-cairo",
@@ -11,52 +14,44 @@ const cairo = Cairo({
   adjustFontFallback: false,
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-heading",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
 export const viewport: Viewport = {
-  themeColor: "#E8A0BF",
+  themeColor: "#FF6B00",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export const metadata: Metadata = {
-  title: "ندية | متجر التسوق الأول في المغرب - الدفع عند الاستلام",
+  title: "ميرا مول | متجر التسوق الأول في المغرب - الدفع عند الاستلام",
   description:
-    "تسوق أفضل المنتجات من ندية. توصيل سريع لجميع مدن المغرب. الدفع عند الاستلام. ملابس، إلكترونيات، أدوات منزلية والمزيد. جودة مضمونة وأسعار تنافسية.",
+    "تسوق أفضل المنتجات من ميرا مول. توصيل سريع لجميع مدن المغرب. الدفع عند الاستلام. ملابس، إلكترونيات، أدوات منزلية والمزيد. جودة مضمونة وأسعار تنافسية.",
   keywords: [
-    "متجر",
-    "تسوق",
-    "المغرب",
-    "الدفع عند الاستلام",
-    "ندية",
-    "ملابس",
-    "إلكترونيات",
-    "أدوات منزلية",
-    "توصيل",
-    "جودة",
-    "أسعار",
+    "متجر", "تسوق", "المغرب", "الدفع عند الاستلام", "ميرا مول",
+    "ملابس", "إلكترونيات", "أدوات منزلية", "توصيل", "جودة", "أسعار",
+    "COD", "Mira Mall", "Morocco", "shopping", "livraison Maroc",
   ],
+  metadataBase: new URL("https://miramall.ma"),
   openGraph: {
-    title: "ندية | متجر التسوق الأول في المغرب - الدفع عند الاستلام",
+    title: "ميرا مول | متجر التسوق الأول في المغرب - الدفع عند الاستلام",
     description:
-      "تسوق أفضل المنتجات من ندية. توصيل سريع لجميع مدن المغرب. الدفع عند الاستلام. ملابس، إلكترونيات، أدوات منزلية والمزيد.",
-    url: "https://nadya.ma",
-    siteName: "ندية Nadya",
+      "تسوق أفضل المنتجات من ميرا مول. توصيل سريع لجميع مدن المغرب. الدفع عند الاستلام. ملابس، إلكترونيات، أدوات منزلية والمزيد.",
+    url: "https://miramall.ma",
+    siteName: "ميرا مول Mira Mall",
     locale: "ar_MA",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "ندية | متجر التسوق الأول في المغرب",
+    title: "ميرا مول | متجر التسوق الأول في المغرب",
     description:
-      "تسوق أفضل المنتجات من ندية. توصيل سريع لجميع مدن المغرب. الدفع عند الاستلام.",
+      "تسوق أفضل المنتجات من ميرا مول. توصيل سريع لجميع مدن المغرب. الدفع عند الاستلام.",
   },
   icons: {
-    icon: "/nadya-favicon.svg",
-    apple: "/nadya-favicon.svg",
+    icon: "/miramall-favicon.svg",
+    apple: "/miramall-favicon.svg",
+  },
+  alternates: {
+    canonical: "https://miramall.ma",
   },
 };
 
@@ -69,11 +64,16 @@ export default function RootLayout({
     <html
       lang="ar"
       dir="rtl"
-      className={`${cairo.variable} ${playfair.variable} h-full antialiased`}
+      className={`${cairo.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
-        <ClientProviders>{children}</ClientProviders>
+      <body className="min-h-full flex flex-col bg-background text-foreground font-sans pb-16 md:pb-0">
+        <ClientProviders>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <MobileBottomNav />
+        </ClientProviders>
       </body>
     </html>
   );

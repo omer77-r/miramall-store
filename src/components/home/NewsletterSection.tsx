@@ -19,7 +19,7 @@ export default function NewsletterSection() {
             النشرة البريدية
           </div>
 
-          <h2 className="text-3xl lg:text-4xl font-bold text-foreground">انضم إلى عائلة ندية</h2>
+          <h2 className="text-3xl lg:text-4xl font-bold text-foreground">انضم إلى عائلة ميرا مول</h2>
           <p className="text-muted-foreground max-w-lg mx-auto leading-relaxed">
             توصل بأحدث المنتجات والعروض الحصرية قبل الجميع. كن أول من يعرف!
           </p>
@@ -67,7 +67,7 @@ export default function NewsletterSection() {
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             type="submit"
-            className="w-full sm:w-auto shrink-0 h-12 px-8 rounded-xl bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-colors shadow-lg shadow-rose-200/40"
+            className="w-full sm:w-auto shrink-0 h-12 px-8 rounded-xl bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-colors shadow-lg shadow-primary/15"
           >
             اشترك الآن
           </motion.button>
