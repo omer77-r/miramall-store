@@ -51,7 +51,7 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
                 className="flex items-center gap-2"
               >
                 <Image 
-                  src="/mira-logo-transparent.png" 
+                  src="/mira-logo-new.png" 
                   alt="Mira Mall Logo" 
                   width={270} 
                   height={90} 

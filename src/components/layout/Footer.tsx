@@ -101,7 +101,7 @@ export function Footer() {
           <div>
             <Link href="/" className="inline-flex items-center gap-2 mb-6">
               <Image 
-                src="/mira-logo-transparent.png" 
+                src="/mira-logo-new.png" 
                 alt="Mira Mall Logo" 
                 width={360} 
                 height={120} 

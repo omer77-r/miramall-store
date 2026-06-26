@@ -1,0 +1,15 @@
+node_modules
+.next
+.git
+.gitignore
+*.md
+.env.local
+.env
+.DS_Store
+*.py
+*.js
+scripts
+assets
+"image proudct"
+public/extracted_products
+public/test-gallery.html
