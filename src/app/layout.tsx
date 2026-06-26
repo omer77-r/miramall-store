@@ -46,12 +46,18 @@ export const metadata: Metadata = {
     description:
       "تسوق أفضل المنتجات من ميرا مول. توصيل سريع لجميع مدن المغرب. الدفع عند الاستلام.",
   },
+  manifest: "/manifest.webmanifest",
   icons: {
     icon: "/miramall-favicon.svg",
     apple: "/miramall-favicon.svg",
   },
   alternates: {
     canonical: "https://miramall.ma",
+  },
+  appleWebApp: {
+    capable: true,
+    title: "ميرا مول",
+    statusBarStyle: "default",
   },
 };
 
