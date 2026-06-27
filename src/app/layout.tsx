@@ -5,6 +5,7 @@ import { ClientProviders } from "@/components/providers/ClientProviders";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
+import WhatsAppFloat from "@/components/layout/WhatsAppFloat";
 
 const cairo = Cairo({
   variable: "--font-cairo",
@@ -22,19 +23,19 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "ميرا مول | متجر التسوق الأول في المغرب - الدفع عند الاستلام",
+  title: "ميرا مول | تسوق منتجات المغرب - توصيل 24h-48h والدفع عند الاستلام",
   description:
-    "تسوق أفضل المنتجات من ميرا مول. توصيل سريع لجميع مدن المغرب. الدفع عند الاستلام. ملابس، إلكترونيات، أدوات منزلية والمزيد. جودة مضمونة وأسعار تنافسية.",
+    "تسوق أفضل المنتجات من ميرا مول. توصيل 24h-48h لجميع مدن المغرب فين ما كنتي. الدفع عند الاستلام بدون مصاريف خفية. جودة مضمونة وأسعار تنافسية.",
   keywords: [
     "متجر", "تسوق", "المغرب", "الدفع عند الاستلام", "ميرا مول",
-    "ملابس", "إلكترونيات", "أدوات منزلية", "توصيل", "جودة", "أسعار",
-    "COD", "Mira Mall", "Morocco", "shopping", "livraison Maroc",
+    "توصيل 24 ساعة", "توصيل 48 ساعة", "COD", "Mira Mall", "Morocco",
+    "shopping", "livraison Maroc", "الدار البيضاء", "الرباط", "مراكش",
   ],
   metadataBase: new URL("https://miramall.ma"),
   openGraph: {
-    title: "ميرا مول | متجر التسوق الأول في المغرب - الدفع عند الاستلام",
+    title: "ميرا مول | تسوق منتجات المغرب - توصيل 24h-48h والدفع عند الاستلام",
     description:
-      "تسوق أفضل المنتجات من ميرا مول. توصيل سريع لجميع مدن المغرب. الدفع عند الاستلام. ملابس، إلكترونيات، أدوات منزلية والمزيد.",
+      "تسوق أفضل المنتجات من ميرا مول. توصيل 24h-48h لجميع مدن المغرب. الدفع عند الاستلام.",
     url: "https://miramall.ma",
     siteName: "ميرا مول Mira Mall",
     locale: "ar_MA",
@@ -42,22 +43,16 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ميرا مول | متجر التسوق الأول في المغرب",
+    title: "ميرا مول | تسوق منتجات المغرب - توصيل 24h-48h",
     description:
-      "تسوق أفضل المنتجات من ميرا مول. توصيل سريع لجميع مدن المغرب. الدفع عند الاستلام.",
+      "تسوق أفضل المنتجات من ميرا مول. توصيل 24h-48h لجميع مدن المغرب. الدفع عند الاستلام.",
   },
-  manifest: "/manifest.webmanifest",
   icons: {
-    icon: "/miramall-favicon.svg",
-    apple: "/miramall-favicon.svg",
+    icon: "/nadya-favicon.svg",
+    apple: "/nadya-favicon.svg",
   },
   alternates: {
     canonical: "https://miramall.ma",
-  },
-  appleWebApp: {
-    capable: true,
-    title: "ميرا مول",
-    statusBarStyle: "default",
   },
 };
 
@@ -79,6 +74,7 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
           <MobileBottomNav />
+          <WhatsAppFloat />
         </ClientProviders>
       </body>
     </html>
