@@ -6,7 +6,7 @@ import { ShoppingBag, Banknote, Truck, ShieldCheck } from "lucide-react";
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-[80vh] md:min-h-[85vh] flex items-center overflow-hidden bg-gradient-to-br from-primary/10 via-primary/5 to-secondary/80">
+    <section className="relative min-h-[50vh] md:min-h-[55vh] flex items-center overflow-hidden bg-gradient-to-br from-primary/10 via-primary/5 to-secondary/80">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
           className="absolute -top-20 right-[10%] w-[500px] h-[500px] rounded-full bg-primary/15 blur-3xl"

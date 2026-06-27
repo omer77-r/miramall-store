@@ -1,6 +1,12 @@
 "use client";
 
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
+
+declare global {
+  interface Window {
+    fbq?: (...args: unknown[]) => void;
+  }
+}
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -20,6 +26,7 @@ import { cn } from "@/lib/utils";
 import type { Product, Review } from "@/lib/types";
 import { getProductReviews, getRelatedProducts, products } from "@/lib/data/products";
 import { ProductCard } from "@/components/product/ProductCard";
+import { useRouter } from "next/navigation";
 
 interface ProductPageClientProps {
   product: Product;
@@ -76,6 +83,21 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
   const [formData, setFormData] = useState({ fullName: "", phone: "", city: "", address: "" });
   const [orderSubmitted, setOrderSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && typeof window.fbq === "function") {
+      window.fbq("track", "ViewContent", {
+        content_name: product.nameAr,
+        content_ids: [product.id],
+        content_type: "product",
+        value: product.price,
+        currency: "MAD",
+      });
+    }
+  }, [product.id, product.nameAr, product.price]);
 
   const productReviews = useMemo(() => getProductReviews(product.id), [product.id]);
   const relatedProducts = useMemo(() => getRelatedProducts(product.id, 8), [product.id]);
@@ -93,23 +115,84 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
     return { star, count, pct };
   });
 
+  const validatePhone = (phone: string) => /^(05|06|07)\d{8}$/.test(phone);
+
   const handleSubmitOrder = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormErrors({});
+
+    const errors: Record<string, string> = {};
+    if (formData.fullName.length < 3) errors.fullName = "الاسم خاصو يكون 3 حروف على الأقل";
+    if (!validatePhone(formData.phone)) errors.phone = "الرقم خاصو يبدا ب 06 أو 07 أو 05 (10 أرقام)";
+    if (!formData.city) errors.city = "اختار المدينة";
+    if (formData.address.length < 5) errors.address = "العنوان خاصو يكون 5 حروف على الأقل";
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
     setIsSubmitting(true);
 
-    const order = {
-      product: product.nameAr,
-      slug: product.slug,
-      quantity,
-      price: product.price * quantity,
-      ...formData,
-      date: new Date().toISOString(),
-    };
-    console.log("📦 طلب جديد:", order);
+    try {
+      const discount = quantity === 2 ? 40 : quantity === 3 ? 80 : 0;
+      const finalPrice = product.price * quantity - discount;
 
-    await new Promise((r) => setTimeout(r, 1000));
-    setIsSubmitting(false);
-    setOrderSubmitted(true);
+      if (typeof window !== "undefined" && typeof window.fbq === "function") {
+        window.fbq("track", "InitiateCheckout", {
+          content_name: product.nameAr,
+          value: finalPrice,
+          currency: "MAD",
+        });
+      }
+
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          product: product.nameAr,
+          productSlug: product.slug,
+          quantity,
+          totalPrice: finalPrice,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!data.success) {
+        const apiErrors: Record<string, string> = {};
+        for (const err of data.errors || []) {
+          apiErrors[err.field] = err.message;
+        }
+        setFormErrors(apiErrors);
+        setIsSubmitting(false);
+        return;
+      }
+
+      if (typeof window !== "undefined" && typeof window.fbq === "function") {
+        window.fbq("track", "Purchase", {
+          content_name: product.nameAr,
+          value: finalPrice,
+          currency: "MAD",
+        });
+      }
+
+      const params = new URLSearchParams({
+        id: data.order.id,
+        name: formData.fullName,
+        product: product.nameAr,
+        qty: String(quantity),
+        price: String(finalPrice),
+        city: formData.city,
+        phone: formData.phone,
+      });
+
+      router.push(`/merci?${params.toString()}`);
+    } catch {
+      setFormErrors({ general: "وقع مشكل. جرب مرة أخرى." });
+      setIsSubmitting(false);
+    }
   };
 
   const scrollRelated = (dir: "left" | "right") => {
@@ -121,11 +204,6 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
     });
   };
 
-  const frequentlyBought = useMemo(() => {
-    return products
-      .filter((p) => p.id !== product.id && (p.category === product.category || p.tags.some((t) => product.tags.includes(t))))
-      .slice(0, 4);
-  }, [product.id, product.category, product.tags]);
 
   return (
     <div className="bg-background">
@@ -232,59 +310,49 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
             {/* Description */}
             <p className="text-muted-foreground leading-relaxed">{product.descriptionAr}</p>
 
-            {/* Features */}
-            <div className="rounded-xl border border-border bg-muted/30 p-4">
-              <h3 className="font-semibold text-foreground mb-3">المميزات</h3>
-              <ul className="space-y-2">
-                {product.features.map((feature, idx) => (
-                  <motion.li
-                    key={idx}
-                    initial={{ opacity: 0, x: -16 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.1 }}
-                    className="flex items-center gap-2.5 text-sm"
+            {/* Quantity Selector + Discount Pricing */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium">الكمية:</span>
+                <div className="flex items-center gap-0 rounded-xl border border-border">
+                  <button
+                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                    className="p-2.5 hover:bg-muted transition-colors rounded-r-xl"
+                    aria-label="تقليل الكمية"
                   >
-                    <Check className="size-4 text-emerald-500 shrink-0" />
-                    <span>{feature}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Specifications */}
-            <div className="rounded-xl border border-border overflow-hidden">
-              <table className="w-full text-sm">
-                <tbody>
-                  {Object.entries(product.specifications).map(([key, value], idx) => (
-                    <tr key={key} className={idx % 2 === 0 ? "bg-muted/30" : ""}>
-                      <td className="px-4 py-2.5 font-medium text-foreground">{key}</td>
-                      <td className="px-4 py-2.5 text-muted-foreground">{value}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Quantity Selector */}
-            <div className="flex items-center gap-3">
-              <span className="text-sm font-medium">الكمية:</span>
-              <div className="flex items-center gap-0 rounded-xl border border-border">
-                <button
-                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="p-2.5 hover:bg-muted transition-colors rounded-r-xl"
-                  aria-label="تقليل الكمية"
-                >
-                  <Minus className="size-4" />
-                </button>
-                <span className="w-10 text-center font-semibold text-sm select-none">{quantity}</span>
-                <button
-                  onClick={() => setQuantity((q) => q + 1)}
-                  className="p-2.5 hover:bg-muted transition-colors rounded-l-xl"
-                  aria-label="زيادة الكمية"
-                >
-                  <Plus className="size-4" />
-                </button>
+                    <Minus className="size-4" />
+                  </button>
+                  <span className="w-10 text-center font-semibold text-sm select-none">{quantity}</span>
+                  <button
+                    onClick={() => setQuantity((q) => Math.min(3, q + 1))}
+                    className="p-2.5 hover:bg-muted transition-colors rounded-l-xl"
+                    aria-label="زيادة الكمية"
+                  >
+                    <Plus className="size-4" />
+                  </button>
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                {[1, 2, 3].map((qty) => {
+                  const discount = qty === 2 ? 40 : qty === 3 ? 80 : 0;
+                  const total = product.price * qty - discount;
+                  return (
+                    <button
+                      key={qty}
+                      type="button"
+                      onClick={() => setQuantity(qty)}
+                      className={cn(
+                        "rounded-xl border p-3 text-center transition-all",
+                        quantity === qty
+                          ? "border-primary bg-primary/5 ring-2 ring-primary/20"
+                          : "border-border hover:border-primary/40"
+                      )}
+                    >
+                      <span className="block text-sm font-bold text-foreground">{qty} {qty === 1 ? "وحدة" : qty === 2 ? "وحدتين" : "وحدات"}</span>
+                      <span className="block text-lg font-bold text-primary mt-0.5">{total} درهم</span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -309,7 +377,7 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
                 {/* Product Summary */}
                 <div className="bg-muted/50 rounded-xl px-4 py-2.5 flex items-center justify-between">
                   <span className="text-sm text-foreground font-medium">{product.nameAr} <span className="text-muted-foreground">×{quantity}</span></span>
-                  <span className="text-sm font-bold text-primary">{product.price * quantity} درهم</span>
+                  <span className="text-sm font-bold text-primary">{product.price * quantity - (quantity === 2 ? 40 : quantity === 3 ? 80 : 0)} درهم</span>
                 </div>
 
                 <div>
@@ -318,10 +386,18 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
                     type="text" required
                     placeholder="مثال: أحمد بنعلي"
                     value={formData.fullName}
-                    onChange={(e) => setFormData((f) => ({ ...f, fullName: e.target.value }))}
-                    className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                    onChange={(e) => {
+                      setFormData((f) => ({ ...f, fullName: e.target.value }));
+                      if (!hasInteracted) setHasInteracted(true);
+                      setFormErrors((prev) => ({ ...prev, fullName: "" }));
+                    }}
+                    className={cn(
+                      "w-full rounded-xl border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all",
+                      formErrors.fullName ? "border-red-400" : "border-border"
+                    )}
                     dir="rtl"
                   />
+                  {formErrors.fullName && <p className="text-xs text-red-500 mt-1">{formErrors.fullName}</p>}
                 </div>
 
                 <div>
@@ -330,10 +406,19 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
                     type="tel" required
                     placeholder="مثال: 0612345678"
                     value={formData.phone}
-                    onChange={(e) => setFormData((f) => ({ ...f, phone: e.target.value }))}
-                    className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-                    dir="rtl"
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/[^0-9]/g, "").slice(0, 10);
+                      setFormData((f) => ({ ...f, phone: val }));
+                      if (!hasInteracted) setHasInteracted(true);
+                      setFormErrors((prev) => ({ ...prev, phone: "" }));
+                    }}
+                    className={cn(
+                      "w-full rounded-xl border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all",
+                      formErrors.phone ? "border-red-400" : "border-border"
+                    )}
+                    dir="ltr"
                   />
+                  {formErrors.phone && <p className="text-xs text-red-500 mt-1 text-right">{formErrors.phone}</p>}
                 </div>
 
                 <div>
@@ -342,10 +427,17 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
                     type="text" required
                     placeholder="مثال: الدار البيضاء"
                     value={formData.city}
-                    onChange={(e) => setFormData((f) => ({ ...f, city: e.target.value }))}
-                    className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                    onChange={(e) => {
+                      setFormData((f) => ({ ...f, city: e.target.value }));
+                      setFormErrors((prev) => ({ ...prev, city: "" }));
+                    }}
+                    className={cn(
+                      "w-full rounded-xl border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all",
+                      formErrors.city ? "border-red-400" : "border-border"
+                    )}
                     dir="rtl"
                   />
+                  {formErrors.city && <p className="text-xs text-red-500 mt-1">{formErrors.city}</p>}
                 </div>
 
                 <div>
@@ -354,11 +446,24 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
                     required rows={2}
                     placeholder="مثال: حي السلام، شارع الحسن الثاني، رقم 12"
                     value={formData.address}
-                    onChange={(e) => setFormData((f) => ({ ...f, address: e.target.value }))}
-                    className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all resize-none"
+                    onChange={(e) => {
+                      setFormData((f) => ({ ...f, address: e.target.value }));
+                      setFormErrors((prev) => ({ ...prev, address: "" }));
+                    }}
+                    className={cn(
+                      "w-full rounded-xl border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all resize-none",
+                      formErrors.address ? "border-red-400" : "border-border"
+                    )}
                     dir="rtl"
                   />
+                  {formErrors.address && <p className="text-xs text-red-500 mt-1">{formErrors.address}</p>}
                 </div>
+
+                {formErrors.general && (
+                  <div className="rounded-xl bg-red-50 border border-red-200 p-3 text-center">
+                    <p className="text-sm text-red-600">{formErrors.general}</p>
+                  </div>
+                )}
 
                 {/* COD + Delivery */}
                 <div className="space-y-2">
@@ -368,7 +473,7 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
                   </div>
                   <div className="flex items-center gap-2 rounded-xl bg-muted/30 border border-border p-3">
                     <Truck className="size-4 text-primary shrink-0" />
-                    <span className="text-xs text-muted-foreground">التوصيل خلال 2-5 أيام عمل</span>
+                    <span className="text-xs text-muted-foreground">التوصيل خلال 2-3 أيام</span>
                   </div>
                 </div>
 
@@ -398,6 +503,26 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
 
           </div>
         </div>
+
+        {/* Features */}
+        <motion.section
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-12"
+        >
+          <div className="rounded-xl border border-border bg-muted/30 p-5">
+            <h3 className="font-semibold text-foreground mb-3 text-lg">المميزات</h3>
+            <ul className="space-y-2">
+              {product.features.map((feature, idx) => (
+                <li key={idx} className="flex items-center gap-2.5 text-sm">
+                  <Check className="size-4 text-emerald-500 shrink-0" />
+                  <span>{feature}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </motion.section>
 
         {/* Customer Reviews Section */}
         <motion.section
@@ -531,50 +656,6 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
           </motion.section>
         )}
 
-        {/* Frequently Bought Together */}
-        {frequentlyBought.length > 0 && (
-          <motion.section
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mt-16 rounded-2xl border border-border bg-card p-6"
-          >
-            <h2 className="text-xl font-bold text-foreground mb-4">اشتريت معاً</h2>
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <div className="w-28 shrink-0">
-                <div className="relative aspect-square overflow-hidden rounded-xl bg-muted">
-                  <Image src={product.images[0]} alt={product.nameAr} fill className="object-cover" />
-                </div>
-                <p className="mt-2 text-center text-xs font-medium truncate">{product.nameAr}</p>
-              </div>
-              {frequentlyBought.slice(0, 3).map((p, idx) => (
-                <div key={p.id} className="flex items-center gap-4">
-                  {idx === 0 && <Plus className="size-5 text-muted-foreground shrink-0" />}
-                  <div className="w-28 shrink-0">
-                    <Link href={`/products/${p.slug}`}>
-                      <div className="relative aspect-square overflow-hidden rounded-xl bg-muted">
-                        <Image src={p.images[0]} alt={p.nameAr} fill className="object-cover" />
-                      </div>
-                      <p className="mt-2 text-center text-xs font-medium truncate">{p.nameAr}</p>
-                    </Link>
-                  </div>
-                  {idx < 2 && <Plus className="size-5 text-muted-foreground shrink-0" />}
-                </div>
-              ))}
-              <div className="flex flex-col items-center gap-2 shrink-0">
-                <span className="text-lg font-bold">
-                  {product.price + frequentlyBought.slice(0, 3).reduce((sum, p) => sum + p.price, 0)} درهم
-                </span>
-                <a
-                  href="#order-form"
-                  className="rounded-xl bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground hover:bg-primary/90 transition-colors inline-flex items-center justify-center"
-                >
-                  اطلب الآن
-                </a>
-              </div>
-            </div>
-          </motion.section>
-        )}
       </div>
 
       {/* Mobile Sticky - Scroll to form */}

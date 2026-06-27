@@ -40,22 +40,11 @@ export default function TrendingProducts() {
           </div>
         </motion.div>
 
-        {/* Desktop grid */}
-        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Product grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 sm:gap-6">
           {products.map((product, index) => (
             <ProductCard key={product.id} product={product} index={index} />
           ))}
-        </div>
-
-        {/* Mobile horizontal scroll */}
-        <div className="md:hidden overflow-x-auto scrollbar-hide -mx-4 px-4">
-          <div className="flex gap-4 pb-4">
-            {products.map((product, index) => (
-              <div key={product.id} className="w-[280px] shrink-0">
-                <ProductCard product={product} index={index} />
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>

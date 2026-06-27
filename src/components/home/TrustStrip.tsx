@@ -35,16 +35,12 @@ export default function TrustStrip() {
         </div>
       </div>
 
-      {/* Mobile: horizontal scroll */}
+      {/* Mobile: static horizontal scroll */}
       <div className="md:hidden overflow-x-auto scrollbar-hide">
-        <motion.div
-          className="flex gap-0"
-          animate={{ x: [0, -800, 0] }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" as const }}
-        >
-          {[...badges, ...badges].map((badge, i) => (
+        <div className="flex gap-0">
+          {badges.map((badge) => (
             <div
-              key={i}
+              key={badge.label}
               className="flex items-center gap-2.5 py-3.5 px-5 whitespace-nowrap shrink-0"
             >
               <badge.icon className="w-5 h-5 text-primary shrink-0" />
@@ -52,7 +48,7 @@ export default function TrustStrip() {
               <span className="mx-2 text-border">|</span>
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

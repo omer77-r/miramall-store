@@ -50,7 +50,7 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 flex items-center">
             <Image
-              src="/mira-logo-new.png"
+              src="/mira-logo-transparent.png"
               alt="Mira Mall Logo"
               width={300}
               height={100}
