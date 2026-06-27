@@ -5,6 +5,7 @@ import { ClientProviders } from "@/components/providers/ClientProviders";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
+import WhatsAppFloat from "@/components/layout/WhatsAppFloat";
 
 const cairo = Cairo({
   variable: "--font-cairo",
@@ -79,6 +80,7 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
           <MobileBottomNav />
+          <WhatsAppFloat />
         </ClientProviders>
       </body>
     </html>
