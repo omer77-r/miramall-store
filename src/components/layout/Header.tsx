@@ -19,17 +19,10 @@ import { cn } from "@/lib/utils"
 import { MobileNav } from "@/components/layout/MobileNav"
 import { MegaMenu } from "@/components/layout/MegaMenu"
 
-const announcementMessages = [
-  "🚚 توصيل مجاني للطلبات فوق 349 درهم",
-  "💰 الدفع عند الاستلام متاح لجميع الطلبات",
-  "📲 دعم عبر واتساب: 0612-345678",
-]
-
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [searchExpanded, setSearchExpanded] = useState(false)
   const [searchValue, setSearchValue] = useState("")
-  const [announcementIndex, setAnnouncementIndex] = useState(0)
   const [isScrolled, setIsScrolled] = useState(false)
   const searchRef = useRef<HTMLInputElement>(null)
   const { theme, setTheme } = useTheme()
@@ -44,12 +37,6 @@ export function Header() {
     return () => unsubscribe()
   }, [scrollY])
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setAnnouncementIndex((prev) => (prev + 1) % announcementMessages.length)
-    }, 4000)
-    return () => clearInterval(timer)
-  }, [])
 
   useEffect(() => {
     if (searchExpanded && searchRef.current) {
@@ -63,24 +50,6 @@ export function Header() {
   return (
     <>
       <MobileNav open={mobileMenuOpen} onClose={handleCloseMobileMenu} />
-
-      {/* Announcement Bar */}
-      <div className="relative z-50 bg-primary text-primary-foreground overflow-hidden h-9 flex items-center">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={announcementIndex}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.3 }}
-              className="text-xs sm:text-sm font-medium tracking-wide whitespace-nowrap px-4"
-            >
-              {announcementMessages[announcementIndex]}
-            </motion.p>
-          </AnimatePresence>
-        </div>
-      </div>
 
       {/* Main Header */}
       <motion.header

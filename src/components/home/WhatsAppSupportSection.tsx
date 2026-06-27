@@ -23,9 +23,9 @@ export default function WhatsAppSupportSection() {
             دعم مباشر
           </div>
 
-          <h2 className="text-3xl lg:text-4xl font-bold text-foreground">تحتاج مساعدة؟ تواصل معنا عبر واتساب</h2>
+          <h2 className="text-3xl lg:text-4xl font-bold text-foreground">عندك سؤال؟ راسلنا فواتساب</h2>
           <p className="text-muted-foreground max-w-lg mx-auto leading-relaxed">
-            فريقنا متواجد باش يجاوب على جميع أسئلتك. تواصل معانا فواتساب باش نردو عليك فظرف وجيز
+            حنا هنا باش نجاوبوك على أي سؤال. كتب لينا ونردو عليك بسرعة.
           </p>
 
           <motion.div

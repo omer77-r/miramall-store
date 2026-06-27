@@ -42,9 +42,9 @@ export default function CustomerReviews() {
             <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
             آراء حقيقية
           </div>
-          <h2 className="text-3xl lg:text-4xl font-bold text-foreground">آراء العملاء</h2>
+          <h2 className="text-3xl lg:text-4xl font-bold text-foreground">شنو قالو الزبناء ديالنا</h2>
           <p className="mt-3 text-muted-foreground max-w-lg mx-auto">
-            شهادات حقيقية من زبناء ثقتهم فميرا مول. رضاكم هو غايتنا
+            ناس حقيقيين شراو من ميرا مول وعجبهم. شوف رأيهم.
           </p>
         </motion.div>
 

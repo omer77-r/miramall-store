@@ -67,7 +67,7 @@ export default function SpecialOfferBanner() {
                 className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-1.5 text-white text-sm font-medium mb-5"
               >
                 <Zap className="w-4 h-4" />
-                عرض لفترة محدودة
+                عرض محدود — ما يفوتكش
               </motion.div>
 
               <motion.h2
@@ -77,7 +77,7 @@ export default function SpecialOfferBanner() {
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white"
               >
-                عروض خاصة لا تُفوَّت
+                تخفيضات حتى 30% — غير دابا!
               </motion.h2>
 
               <motion.p
@@ -87,7 +87,7 @@ export default function SpecialOfferBanner() {
                 transition={{ duration: 0.6, delay: 0.4 }}
                 className="mt-3 text-white/80 text-base sm:text-lg max-w-lg mx-auto lg:mx-0"
               >
-                استفد من تخفيضات تصل إلى 30٪ على مجموعة مختارة من أفضل المنتجات
+                أثمنة خاصة على منتجات مختارة. الكمية محدودة — شري دابا وخلّص ملي توصل!
               </motion.p>
 
               <motion.div
@@ -98,7 +98,7 @@ export default function SpecialOfferBanner() {
                 className="flex items-center justify-center lg:justify-start gap-3 mt-4 text-white/70 text-sm"
               >
                 <Clock className="w-4 h-4" />
-                <span>العرض ساري حتى نفاد الكمية</span>
+                <span>العرض غادي يسالي — ما تنساش!</span>
               </motion.div>
             </div>
 
@@ -116,7 +116,7 @@ export default function SpecialOfferBanner() {
                 href="/shop"
                 className="inline-flex items-center gap-2 bg-white text-primary rounded-full px-10 py-4 font-bold text-lg shadow-lg hover:shadow-xl transition-shadow"
               >
-                تسوق العروض
+                شوف العروض
                 <ArrowLeft className="w-5 h-5" />
               </Link>
             </motion.div>
