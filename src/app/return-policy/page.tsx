@@ -204,7 +204,7 @@ export default function ReturnPolicyPage() {
                   </li>
                   <li>
                     <strong className="text-foreground">الطريقة:</strong> بالنسبة
-                    لطلبات الدفع عند الاستلام، يتم إرجاع المبلغ عبر التحويل البنكي
+                    لطلبات خلّص ملي توصلك، كيتم إرجاع المبلغ عبر التحويل البنكي
                     أو التسليم النقدي حسب منطقتكم.
                   </li>
                   <li>

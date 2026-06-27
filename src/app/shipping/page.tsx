@@ -207,20 +207,20 @@ export default function ShippingPage() {
                   <ShieldCheck className="size-5 text-primary" />
                 </div>
                 <h2 className="font-heading text-xl font-bold text-foreground">
-                  الدفع عند الاستلام (COD)
+                  خلّص ملي توصلك (COD)
                 </h2>
               </div>
               <div className="space-y-4 leading-relaxed text-muted-foreground">
                 <p>
-                  نقدم خدمة الدفع عند الاستلام لجميع الطلبات في جميع مدن المغرب.
-                  هذه الخدمة تعني:
+                  كنوفرو ليك خدمة خلّص ملي توصلك فجميع مدن المغرب.
+                  هاد الخدمة كتعني:
                 </p>
                 <ul className="list-inside list-disc space-y-3">
-                  <li>لا تحتاج إلى بطاقة بنكية أو حساب إلكتروني للدفع.</li>
+                  <li>ما محتاجش بطاقة بنكية أو حساب إلكتروني.</li>
                   <li>
-                    تدفع فقط عند استلام طلبيتك والتأكد من أنها مطابقة لطلبك.
+                    كتخلّص غير ملي كتوصلك الطلبية وكتأكد بلي مطابقة لطلبك.
                   </li>
-                  <li>لا توجد أي رسوم إضافية على خدمة الدفع عند الاستلام.</li>
+                  <li>بلا أي مصاريف إضافية.</li>
                   <li>
                     تفحص المنتج قبل الدفع لمندوب التوصيل للتأكد من سلامته.
                   </li>

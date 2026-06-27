@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Banknote, Truck, ShieldCheck, RotateCcw, Gem } from "lucide-react";
 
 const badges = [
-  { icon: Banknote, label: "الدفع عند الاستلام" },
+  { icon: Banknote, label: "خلّص ملي توصلك" },
   { icon: Truck, label: "توصيل سريع لجميع المدن" },
   { icon: ShieldCheck, label: "ضمان الجودة" },
   { icon: RotateCcw, label: "إرجاع سهل" },

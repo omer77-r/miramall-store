@@ -78,7 +78,7 @@ export default function HeroSection() {
             className="flex flex-wrap items-center justify-center gap-2 pt-2"
           >
             {[
-              { icon: Banknote, text: "الدفع عند الاستلام" },
+              { icon: Banknote, text: "خلّص ملي توصلك" },
               { icon: Truck, text: "توصيل 24h-48h" },
               { icon: ShieldCheck, text: "إرجاع فـ 14 يوم" },
             ].map((item) => (

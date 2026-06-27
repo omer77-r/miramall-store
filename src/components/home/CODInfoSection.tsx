@@ -48,7 +48,7 @@ export default function CODInfoSection() {
             <Banknote className="w-4 h-4" />
             نظام الدفع المريح
           </div>
-          <h2 className="text-3xl lg:text-4xl font-bold text-foreground">علاش الدفع عند الاستلام؟</h2>
+          <h2 className="text-3xl lg:text-4xl font-bold text-foreground">علاش خلّص ملي توصلك؟</h2>
           <p className="mt-4 text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             فميرا مول، ما كنطلبوك تخلّص حتى تشوف السلعة بيديك. هادي هي الثقة.
           </p>
@@ -82,7 +82,7 @@ export default function CODInfoSection() {
           transition={{ duration: 0.6, delay: 0.6 }}
           className="mt-10 text-center text-sm text-muted-foreground"
         >
-          الدفع عند الاستلام فجميع مدن المغرب • بلا مصاريف خفية
+          خلّص ملي توصلك فجميع مدن المغرب • بلا مصاريف خفية
         </motion.p>
       </div>
     </section>

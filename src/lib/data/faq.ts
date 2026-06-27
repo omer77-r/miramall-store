@@ -17,7 +17,7 @@ export const faqItems: FAQ[] = [
   {
     id: "faq-1",
     question: "How does Cash on Delivery work?",
-    questionAr: "كيفاش كيخدم الدفع عند الاستلام؟",
+    questionAr: "كيفاش كيخدم خلّص ملي توصلك؟",
     answer: "When you place an order, we deliver your package to your doorstep. You inspect the product first, then pay the delivery agent in cash. No advance payment required.",
     answerAr: "ملّي كاتطلب، كنوصلو ليك الطلبية للباب ديالك. كاتعاين على المنتج أولاً، ومن بعد كاتخلص لعامل التوصيل نقداً. لا حاجة للدفع المسبق.",
     category: "ordering",

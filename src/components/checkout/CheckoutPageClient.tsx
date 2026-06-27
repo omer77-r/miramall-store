@@ -18,7 +18,7 @@ export function CheckoutPageClient() {
           </div>
           <h1 className="text-2xl font-bold text-foreground">إتمام الطلب</h1>
           <p className="text-muted-foreground max-w-md">
-            اختر المنتج الذي يعجبك من المتجر، ثم اضغط على "اطلب الآن" واتبع الخطوات لإتمام طلبك. الدفع عند الاستلام متاح في جميع مدن المغرب.
+            اختر المنتج الذي يعجبك من المتجر، ثم اضغط على "اطلب الآن" واتبع الخطوات لإتمام طلبك. خلّص ملي توصلك فجميع مدن المغرب.
           </p>
           <Link
             href="/shop"

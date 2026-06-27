@@ -235,7 +235,7 @@ export function Footer() {
           {[
             {
               icon: CreditCard,
-              label: "الدفع عند الاستلام",
+              label: "خلّص ملي توصلك",
               sub: "ادفعي عند استلام طلبك",
             },
             {
@@ -278,7 +278,7 @@ export function Footer() {
           </p>
           <div className="flex items-center gap-4 text-xs text-zinc-400">
             <span className="flex items-center gap-1.5">
-              💳 الدفع عند الاستلام
+              💳 خلّص ملي توصلك
             </span>
             <span className="w-px h-3 bg-zinc-200" />
             <span>🇲🇦 صنع في المغرب</span>

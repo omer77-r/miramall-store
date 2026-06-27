@@ -275,8 +275,8 @@ export const topBarLinks: NavItem[] = [
     icon: "Truck",
   },
   {
-    title: "الدفع عند الاستلام",
-    titleAr: "الدفع عند الاستلام",
+    title: "خلّص ملي توصلك",
+    titleAr: "خلّص ملي توصلك",
     href: "#",
     icon: "Banknote",
   },

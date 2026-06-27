@@ -469,11 +469,11 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 rounded-xl bg-emerald-50 border border-emerald-200 p-3">
                     <ShieldCheck className="size-4 text-emerald-600 shrink-0" />
-                    <span className="text-xs text-emerald-700 font-medium">الدفع عند الاستلام - توصيل لجميع مدن المغرب</span>
+                    <span className="text-xs text-emerald-700 font-medium">خلّص ملي توصلك - توصيل لجميع مدن المغرب</span>
                   </div>
                   <div className="flex items-center gap-2 rounded-xl bg-muted/30 border border-border p-3">
                     <Truck className="size-4 text-primary shrink-0" />
-                    <span className="text-xs text-muted-foreground">التوصيل خلال 2-3 أيام</span>
+                    <span className="text-xs text-muted-foreground">التوصيل خلال 1-2 أيام</span>
                   </div>
                 </div>
 
@@ -494,7 +494,7 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
                   ) : (
                     <>
                       <ShoppingCart className="size-4" />
-                      تأكيد الطلب (الدفع عند الاستلام)
+                      تأكيد الطلب (خلّص ملي توصلك)
                     </>
                   )}
                 </motion.button>
