@@ -71,16 +71,6 @@ function MerciContent() {
         )}
 
         <div className="space-y-3">
-          <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-6 py-3.5 text-sm font-bold text-white hover:bg-emerald-600 transition-colors shadow-lg shadow-emerald-500/25"
-          >
-            <MessageCircle className="size-5 fill-white" />
-            أكد طلبك عبر واتساب
-          </a>
-
           <Link
             href="/shop"
             className="flex w-full items-center justify-center gap-2 rounded-xl border border-border px-6 py-3.5 text-sm font-bold text-foreground hover:bg-muted transition-colors"

@@ -16,9 +16,9 @@ export default function WhatsAppFloat() {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-20 left-4 z-50 md:bottom-6 md:left-6 flex items-center gap-2 rounded-full bg-emerald-500 text-white shadow-xl shadow-emerald-500/40 hover:bg-emerald-600 hover:scale-105 transition-all duration-200 px-5 py-3"
+      className="fixed bottom-20 left-4 z-50 md:bottom-6 md:left-6 flex items-center gap-1.5 rounded-full bg-emerald-500 text-white shadow-xl shadow-emerald-500/40 hover:bg-emerald-600 hover:scale-105 transition-all duration-200 px-3.5 py-2"
     >
-      <span className="font-bold text-sm">راسلنا عبر واتساب</span>
+      <span className="font-bold text-base">واتساب</span>
       <MessageCircle className="size-5 fill-white" />
       <span className="absolute top-0 right-0 size-3 rounded-full bg-emerald-300 animate-ping" />
       <span className="absolute top-0 right-0 size-3 rounded-full bg-emerald-400" />
