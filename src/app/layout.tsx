@@ -48,10 +48,6 @@ export const metadata: Metadata = {
     description:
       "تسوق أفضل المنتجات من ميرا مول. توصيل 24h-48h لجميع مدن المغرب. الدفع عند الاستلام.",
   },
-  icons: {
-    icon: "/mira-logo-transparent.png",
-    apple: "/mira-logo-transparent.png",
-  },
   alternates: {
     canonical: "https://miramall.ma",
   },
