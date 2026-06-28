@@ -369,16 +369,22 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
                 </p>
               </div>
             ) : (
-              <form id="order-form" onSubmit={handleSubmitOrder} className="rounded-2xl border border-border bg-card p-5 space-y-3">
-                <h3 className="font-bold text-foreground text-base flex items-center gap-2">
-                  <ShoppingCart className="size-5 text-primary" />
-                  إتمام الطلب
-                </h3>
+              <form id="order-form" onSubmit={handleSubmitOrder} className="rounded-2xl border-2 border-primary/40 bg-card p-5 pt-0 space-y-3 shadow-xl shadow-primary/10 scroll-mt-24 overflow-hidden">
+                {/* Header banner */}
+                <div className="-mx-5 mb-1 bg-gradient-to-l from-primary to-accent px-5 py-4 text-center">
+                  <h3 className="font-extrabold text-white text-lg flex items-center justify-center gap-2">
+                    <ShoppingCart className="size-5" />
+                    عمّر معلوماتك باش تطلب
+                  </h3>
+                  <p className="text-white/90 text-xs mt-1">
+                    دخّل سميتك، نمرتك والمدينة — وخلّص ملي توصلك 📦
+                  </p>
+                </div>
 
                 {/* Product Summary */}
-                <div className="bg-muted/50 rounded-xl px-4 py-2.5 flex items-center justify-between">
-                  <span className="text-sm text-foreground font-medium">{product.nameAr} <span className="text-muted-foreground">×{quantity}</span></span>
-                  <span className="text-sm font-bold text-primary">{product.price * quantity - (quantity === 2 ? 40 : quantity === 3 ? 80 : 0)} درهم</span>
+                <div className="bg-primary/5 border border-primary/20 rounded-xl px-4 py-2.5 flex items-center justify-between">
+                  <span className="text-sm text-foreground font-bold">{product.nameAr} <span className="text-muted-foreground font-medium">×{quantity}</span></span>
+                  <span className="text-base font-extrabold text-primary">{product.price * quantity - (quantity === 2 ? 40 : quantity === 3 ? 80 : 0)} درهم</span>
                 </div>
 
                 <div>
