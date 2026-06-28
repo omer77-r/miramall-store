@@ -14,6 +14,7 @@ export interface OrderRow {
   product: string;
   productSlug: string;
   quantity: number;
+  unitPrice?: number;
   totalPrice: number;
   status: string;
 }

@@ -15,6 +15,7 @@ const orderSchema = z.object({
   product: z.string(),
   productSlug: z.string(),
   quantity: z.number().int().min(1),
+  unitPrice: z.number().min(0).optional(),
   totalPrice: z.number().min(1),
 });
 

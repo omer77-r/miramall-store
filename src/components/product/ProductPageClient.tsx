@@ -154,6 +154,7 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
           product: product.nameAr,
           productSlug: product.slug,
           quantity,
+          unitPrice: product.price,
           totalPrice: finalPrice,
         }),
       });

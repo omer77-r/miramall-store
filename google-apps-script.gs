@@ -1,59 +1,37 @@
 /**
  * ========================================================
- *  MiraMall — استقبال الطلبات فـ Google Sheet (نسخة PRO)
+ *  MiraMall — استقبال الطلبات فـ Google Sheet
+ *  (يطابق جدولك: تاريخ الطلب ... آخر تحديث)
  * ========================================================
  *
- * إلا سبق و لصقتي نسخة قديمة:
- *   1. مسح الكود القديم كامل و لصق هادا.
+ * كيفية التحديث:
+ *   1. افتح Apps Script ‹ مسح الكود القديم ‹ لصق هادا.
  *   2. Deploy ‹ Manage deployments ‹ ✏️ Edit ‹ Version: "New version" ‹ Deploy.
- *      (l URL ما يتبدلش، غير الكود كيتحدث.)
+ *      (l URL ما يتبدلش.)
  *
- * إعدادات الـ Deploy خاصهم يكونو:
+ * إعدادات الـ Deploy:
  *   - Execute as: Me
- *   - Who has access: Anyone (Tout le monde)
+ *   - Who has access: Anyone
+ *
+ * ملاحظة: هاد الكود ما كيمسحش l header ديالك و لا l dropdown.
+ * كيزيد غير صف جديد f كل طلب، و كيحط الحالة "طلب جديد".
+ *
+ * ترتيب الأعمدة المنتظر (A ‹ N):
+ *   A تاريخ الطلب · B رقم الطلب · C الاسم الكامل · D رقم الهاتف ·
+ *   E المدينة · F العنوان الكامل · G الكمية · H المنتج ·
+ *   I ثمن الوحدة · J المجموع · K حالة الطلب · L ملاحظات ·
+ *   M المسؤول · N آخر تحديث
  */
-
-var HEADERS = [
-  "رقم الطلب", "التاريخ", "الاسم", "الهاتف", "المدينة",
-  "العنوان", "المنتج", "الكمية", "الثمن (درهم)", "الحالة",
-];
 
 function getSheet_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ss.getSheetByName("Orders");
-  if (!sheet) sheet = ss.insertSheet("Orders");
-
-  // أول مرة: نزينو l header و نضبطو l جدول
-  if (sheet.getLastRow() === 0) {
-    sheet.appendRow(HEADERS);
-
-    var header = sheet.getRange(1, 1, 1, HEADERS.length);
-    header
-      .setBackground("#FF6B00")
-      .setFontColor("#FFFFFF")
-      .setFontWeight("bold")
-      .setFontSize(11)
-      .setHorizontalAlignment("center")
-      .setVerticalAlignment("middle");
-
-    sheet.setRowHeight(1, 34);
-    sheet.setFrozenRows(1);
-
-    // اتجاه من اليمين لليسار (عربية)
-    sheet.setRightToLeft(true);
-
-    // عرض الأعمدة
-    var widths = [130, 150, 150, 120, 110, 220, 220, 70, 100, 90];
-    for (var i = 0; i < widths.length; i++) {
-      sheet.setColumnWidth(i + 1, widths[i]);
-    }
-
-    // عمود الهاتف = نص (باش مايطيحش l صفر)
-    sheet.getRange("D2:D").setNumberFormat("@");
-    // عمود التاريخ = تاريخ + وقت
-    sheet.getRange("B2:B").setNumberFormat("dd/MM/yyyy HH:mm");
+  var sheets = ss.getSheets();
+  // نقلبو على l ورقة لي فيها l header "تاريخ الطلب"
+  for (var i = 0; i < sheets.length; i++) {
+    var a1 = String(sheets[i].getRange(1, 1).getValue() || "");
+    if (a1.indexOf("تاريخ") !== -1) return sheets[i];
   }
-  return sheet;
+  return sheets[0];
 }
 
 function doPost(e) {
@@ -61,41 +39,42 @@ function doPost(e) {
     var sheet = getSheet_();
     var d = JSON.parse(e.postData.contents);
 
-    var row = sheet.getLastRow() + 1;
+    var lastRow = sheet.getLastRow();      // الصف 1 = العناوين
+    var newRow = lastRow + 1;
+    var orderNum = lastRow;                // أول طلب = 1 (الصف 2)
+    var orderNumStr = (orderNum < 10 ? "0" : "") + orderNum;  // 01, 02, ... 10, 11
 
-    var values = [[
-      d.id || "",
-      d.date ? new Date(d.date) : new Date(),
-      d.fullName || "",
-      "'" + (d.phone || ""),          // ' باش الرقم يبقى نص و الصفر مايطيحش
-      d.city || "",
-      d.address || "",
-      d.product || "",
-      Number(d.quantity) || "",
-      Number(d.totalPrice) || "",
-      d.status || "جديد",
-    ]];
+    var now = new Date();
+    var qty = Number(d.quantity) || 1;
+    var total = Number(d.totalPrice) || 0;
+    var unit = d.unitPrice != null ? Number(d.unitPrice) : (qty ? Math.round(total / qty) : total);
 
-    sheet.getRange(row, 1, 1, HEADERS.length).setValues(values);
+    var row = [
+      now,                       // A تاريخ الطلب
+      orderNumStr,               // B رقم الطلب
+      d.fullName || "",          // C الاسم الكامل
+      "'" + (d.phone || ""),     // D رقم الهاتف (نص باش مايطيحش l صفر)
+      d.city || "",              // E المدينة
+      d.address || "",           // F العنوان الكامل
+      qty,                       // G الكمية
+      d.product || "",           // H المنتج
+      unit,                      // I ثمن الوحدة
+      total,                     // J المجموع
+      "طلب جديد",                // K حالة الطلب
+      "",                        // L ملاحظات
+      "",                        // M المسؤول
+      now,                       // N آخر تحديث
+    ];
 
-    // تنسيق الصف: محاذاة + حدود + لون متناوب
-    var range = sheet.getRange(row, 1, 1, HEADERS.length);
-    range.setVerticalAlignment("middle");
-    range.setBorder(true, true, true, true, true, true, "#E5E5E5", SpreadsheetApp.BorderStyle.SOLID);
-    if (row % 2 === 0) range.setBackground("#FFF6EF");
+    sheet.getRange(newRow, 1, 1, row.length).setValues([row]);
 
-    // وسّط الأعمدة القصيرة: رقم الطلب، الهاتف، الكمية، الثمن، الحالة
-    [1, 4, 8, 9, 10].forEach(function (c) {
-      sheet.getRange(row, c).setHorizontalAlignment("center");
-    });
-
-    // الحالة "جديد" بلون مميز
-    sheet.getRange(row, 10)
-      .setBackground("#FFE08A")
-      .setFontWeight("bold");
+    // تنسيق: التاريخ + الهاتف نص
+    sheet.getRange(newRow, 1).setNumberFormat("dd/MM/yyyy HH:mm");   // A
+    sheet.getRange(newRow, 4).setNumberFormat("@");                  // D
+    sheet.getRange(newRow, 14).setNumberFormat("dd/MM/yyyy HH:mm");  // N
 
     return ContentService
-      .createTextOutput(JSON.stringify({ ok: true, row: row }))
+      .createTextOutput(JSON.stringify({ ok: true, order: orderNumStr, row: newRow }))
       .setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
     return ContentService
@@ -109,16 +88,14 @@ function testAppend() {
   doPost({
     postData: {
       contents: JSON.stringify({
-        id: "MM-TEST-0001",
-        date: new Date().toISOString(),
         fullName: "تجربة",
         phone: "0612345678",
         city: "الدار البيضاء",
-        address: "شارع التجربة",
-        product: "منتج تجريبي",
+        address: "شارع التجربة رقم 5",
+        product: "آلة مساج",
         quantity: 2,
-        totalPrice: 250,
-        status: "جديد",
+        unitPrice: 250,
+        totalPrice: 460,
       }),
     },
   });
