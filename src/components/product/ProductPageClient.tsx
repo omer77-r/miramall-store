@@ -58,8 +58,8 @@ function ReviewCard({ review }: { review: Review }) {
       className="rounded-xl border border-border bg-card p-4"
     >
       <div className="flex items-center gap-3">
-        <div className="relative size-10 overflow-hidden rounded-full bg-secondary">
-          <Image src={review.avatar} alt={review.userName} fill className="object-cover" />
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-white font-bold">
+          {review.userName.trim().charAt(0)}
         </div>
         <div>
           <p className="font-semibold text-sm">{review.userName}</p>
