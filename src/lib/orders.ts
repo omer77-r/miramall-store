@@ -42,16 +42,22 @@ function getWorkbook(): XLSX.WorkBook {
   return wb;
 }
 
-export function saveOrder(data: Omit<OrderRow, "id" | "date" | "status">): OrderRow {
-  const wb = getWorkbook();
-  const ws = wb.Sheets["Orders"];
-
-  const order: OrderRow = {
+/** كيبني الطلب (id, date, status) بلا ما يسجلو فأي بلاصة. */
+export function createOrder(
+  data: Omit<OrderRow, "id" | "date" | "status">
+): OrderRow {
+  return {
     id: generateOrderId(),
     date: new Date().toISOString(),
     status: "جديد",
     ...data,
   };
+}
+
+/** كيسجل الطلب ف ملف Excel محلي — كيخدم غير محلياً (ماشي على serverless). */
+export function saveOrderToExcel(order: OrderRow): void {
+  const wb = getWorkbook();
+  const ws = wb.Sheets["Orders"];
 
   const rows = XLSX.utils.sheet_to_json<OrderRow>(ws);
   rows.push(order);
@@ -62,7 +68,12 @@ export function saveOrder(data: Omit<OrderRow, "id" | "date" | "status">): Order
   fs.mkdirSync(path.dirname(ORDERS_FILE), { recursive: true });
   const buf = XLSX.write(wb, { type: "buffer", bookType: "xlsx" });
   fs.writeFileSync(ORDERS_FILE, buf);
+}
 
+/** توافق قديم: كيبني الطلب وكيسجلو ف Excel محلي. */
+export function saveOrder(data: Omit<OrderRow, "id" | "date" | "status">): OrderRow {
+  const order = createOrder(data);
+  saveOrderToExcel(order);
   return order;
 }
 

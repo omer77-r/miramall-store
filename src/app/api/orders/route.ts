@@ -2,7 +2,8 @@ export const runtime = "nodejs";
 
 import { NextRequest } from "next/server";
 import { z } from "zod";
-import { saveOrder, checkRateLimit } from "@/lib/orders";
+import { createOrder, saveOrderToExcel, checkRateLimit } from "@/lib/orders";
+import { appendOrderToSheet } from "@/lib/google-sheets";
 
 const orderSchema = z.object({
   fullName: z.string().min(3, "الاسم خاصو يكون 3 حروف على الأقل"),
@@ -45,7 +46,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const order = saveOrder(result.data);
+    const order = createOrder(result.data);
+
+    // 1) كنجربو نصيفطوه ل Google Sheet (كيخدم online)
+    const sentToSheet = await appendOrderToSheet(order);
+
+    // 2) إلا ماكانش webhook مكوّن، كنسجلوه ف Excel محلي (للتطوير المحلي)
+    if (!sentToSheet) {
+      try {
+        saveOrderToExcel(order);
+      } catch (e) {
+        console.error("LOCAL_EXCEL_ERROR:", e);
+      }
+    }
 
     return Response.json({ success: true, order });
   } catch (err) {
