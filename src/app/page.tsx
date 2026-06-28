@@ -5,7 +5,6 @@ import BestSellersSection from "@/components/home/BestSellersSection";
 import SpecialOfferBanner from "@/components/home/SpecialOfferBanner";
 import CODInfoSection from "@/components/home/CODInfoSection";
 import CustomerReviews from "@/components/home/CustomerReviews";
-import WhatsAppSupportSection from "@/components/home/WhatsAppSupportSection";
 
 export default function Home() {
   return (
@@ -17,7 +16,6 @@ export default function Home() {
       <BestSellersSection />
       <CODInfoSection />
       <CustomerReviews />
-      <WhatsAppSupportSection />
     </div>
   );
 }

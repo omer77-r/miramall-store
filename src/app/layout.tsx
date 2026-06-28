@@ -5,7 +5,6 @@ import { ClientProviders } from "@/components/providers/ClientProviders";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
-import WhatsAppFloat from "@/components/layout/WhatsAppFloat";
 import Script from "next/script";
 
 const cairo = Cairo({
@@ -71,7 +70,6 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
           <MobileBottomNav />
-          <WhatsAppFloat />
         </ClientProviders>
         <Script
           id="meta-pixel"
@@ -86,7 +84,7 @@ export default function RootLayout({
               t.src=v;s=b.getElementsByTagName(e)[0];
               s.parentNode.insertBefore(t,s)}(window, document,'script',
               'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', 'YOUR_PIXEL_ID');
+              fbq('init', '1343992540996759');
               fbq('track', 'PageView');
             `,
           }}
@@ -96,7 +94,7 @@ export default function RootLayout({
             height="1"
             width="1"
             style={{ display: "none" }}
-            src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"
+            src="https://www.facebook.com/tr?id=1343992540996759&ev=PageView&noscript=1"
             alt=""
           />
         </noscript>
