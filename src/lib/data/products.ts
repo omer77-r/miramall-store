@@ -366,12 +366,36 @@ export const products: Product[] = [
   }
 ];
 
+function bySlugs(slugs: string[]): Product[] {
+  return slugs
+    .map((slug) => products.find((p) => p.slug === slug))
+    .filter((p): p is Product => Boolean(p));
+}
+
+// الأكثر طلباً (مختارة يدوياً)
+const TRENDING_SLUGS = [
+  "car-air-mattress-pump-pillows",   // فراش السيارة
+  "massage-machine",                  // آلة مساج
+  "mini-handheld-fan",                // فرفارة يد صغيرة
+  "solar-camera-security-light",      // مصباح شمسي على شكل كاميرا
+  "hair-removal-machine",             // آلة إزالة الشعر
+  "portable-juice-blender",           // آلة طحن عصير
+];
+
+// الأكثر مبيعاً (مختارة يدوياً)
+const BESTSELLER_SLUGS = [
+  "hair-removal-machine",             // آلة إزالة الشعر
+  "portable-juice-blender",           // آلة طحن عصير
+  "car-air-mattress-pump-pillows",   // فراش السيارة
+  "metal-clothes-hanger-4-tier",      // نشار الملابس المعدني 4 طبقات
+];
+
 export function getTrending(limit = 6): Product[] {
-  return products.filter((p) => p.isTrending).slice(0, limit);
+  return bySlugs(TRENDING_SLUGS).slice(0, limit);
 }
 
 export function getBestSellers(limit = 8): Product[] {
-  return products.filter((p) => p.isBestSeller).slice(0, limit);
+  return bySlugs(BESTSELLER_SLUGS).slice(0, limit);
 }
 
 export function getNewArrivals(limit = 8): Product[] {
