@@ -139,6 +139,17 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
       const finalPrice = product.price * quantity - discount;
 
       if (typeof window !== "undefined" && typeof window.fbq === "function") {
+        // Advanced Matching: data dyal l client (Meta كيشفّرها أوتوماتيك) — مرة وحدة لكل l events
+        const nameParts = formData.fullName.trim().split(/\s+/);
+        const phoneIntl = formData.phone.replace(/\D/g, "").replace(/^0/, "212");
+        window.fbq("init", "1343992540996759", {
+          ph: phoneIntl,
+          fn: nameParts[0] || "",
+          ln: nameParts.slice(1).join(" ") || "",
+          ct: formData.city.trim(),
+          country: "ma",
+        });
+
         window.fbq("track", "InitiateCheckout", {
           content_name: product.nameAr,
           value: finalPrice,
@@ -172,8 +183,11 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
       }
 
       if (typeof window !== "undefined" && typeof window.fbq === "function") {
+        // l init b advanced matching تدار قبل (InitiateCheckout)
         window.fbq("track", "Purchase", {
           content_name: product.nameAr,
+          content_ids: [product.slug],
+          content_type: "product",
           value: finalPrice,
           currency: "MAD",
         });
