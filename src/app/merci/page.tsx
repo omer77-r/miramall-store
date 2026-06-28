@@ -3,90 +3,86 @@
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
-import { Check, MessageCircle, ShoppingBag, ArrowRight } from "lucide-react";
-
-const WHATSAPP_NUMBER = "212600000000";
+import { Check, CornerDownLeft } from "lucide-react";
 
 function MerciContent() {
   const params = useSearchParams();
-  const orderId = params.get("id") || "";
-  const name = params.get("name") || "";
   const product = params.get("product") || "";
   const qty = params.get("qty") || "1";
   const price = params.get("price") || "";
-  const city = params.get("city") || "";
-  const phone = params.get("phone") || "";
-
-  const whatsappMessage = encodeURIComponent(
-    `السلام عليكم، أنا ${name}، طلبت ${product} × ${qty}، المدينة: ${city}، المبلغ: ${price} درهم، رقم الطلب: ${orderId}`
-  );
-  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMessage}`;
 
   return (
-    <div className="bg-background min-h-screen">
-      <div className="mx-auto max-w-lg px-4 py-16 text-center" dir="rtl">
-        <div className="mx-auto size-20 rounded-full bg-emerald-100 flex items-center justify-center mb-6">
-          <Check className="size-10 text-emerald-600" />
+    <div className="min-h-screen bg-gradient-to-b from-[#f5f0e8] to-white">
+      <div className="mx-auto max-w-md px-5 py-12 text-center" dir="rtl">
+        {/* Checkmark */}
+        <div className="mx-auto size-24 rounded-full bg-emerald-50 border-4 border-emerald-100 flex items-center justify-center mb-6">
+          <Check className="size-12 text-emerald-500 stroke-[3]" />
         </div>
 
-        <h1 className="text-2xl font-bold text-foreground mb-2">
-          تم استلام طلبك بنجاح! 🎉
+        {/* Title */}
+        <h1 className="text-3xl font-black text-zinc-800 mb-3">
+          شكراً لك!
         </h1>
-        <p className="text-muted-foreground mb-8">
-          شكراً {name || "ليك"}، غادي نتواصلو معاك قريباً لتأكيد الطلب.
+        <p className="text-sm text-zinc-500 leading-relaxed mb-8">
+          طلبك تسجل بنجاح. فريقنا غادي يتاصل بيك فأقرب وقت باش يأكد التوصيل.
         </p>
 
-        {orderId && (
-          <div className="rounded-2xl border border-border bg-card p-5 mb-6 text-right">
-            <h3 className="font-bold text-foreground mb-3">ملخص الطلب</h3>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">رقم الطلب</span>
-                <span className="font-medium font-mono">{orderId}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">المنتج</span>
-                <span className="font-medium">{product}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">الكمية</span>
-                <span className="font-medium">{qty}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">المدينة</span>
-                <span className="font-medium">{city}</span>
-              </div>
-              {phone && (
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">الهاتف</span>
-                  <span className="font-medium" dir="ltr">{phone}</span>
-                </div>
-              )}
-              <div className="border-t border-border pt-2 flex justify-between">
-                <span className="font-bold">المبلغ الإجمالي</span>
-                <span className="font-bold text-primary">{price} درهم</span>
-              </div>
+        {/* Order Summary Card */}
+        <div className="rounded-2xl border border-zinc-200 bg-white p-5 mb-8 text-right">
+          <div className="space-y-3 text-sm">
+            <div className="flex justify-between items-start">
+              <span className="font-bold text-zinc-800 flex-1 text-left">{product}</span>
+              <span className="text-zinc-400 font-medium mr-0 ml-4 flex-shrink-0">المنتج</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-bold text-zinc-800">{qty}</span>
+              <span className="text-zinc-400 font-medium">الكمية</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-bold text-zinc-800">خلّص كي توصلك</span>
+              <span className="text-zinc-400 font-medium">الخلاص</span>
+            </div>
+            <div className="border-t border-dashed border-zinc-200 pt-3 flex justify-between items-center">
+              <span className="font-black text-2xl text-primary">{price} درهم</span>
+              <span className="text-zinc-400 font-medium">المجموع</span>
             </div>
           </div>
-        )}
-
-        <div className="space-y-3">
-          <Link
-            href="/shop"
-            className="flex w-full items-center justify-center gap-2 rounded-xl border border-border px-6 py-3.5 text-sm font-bold text-foreground hover:bg-muted transition-colors"
-          >
-            <ShoppingBag className="size-5" />
-            تسوق المزيد
-          </Link>
-
-          <Link
-            href="/"
-            className="flex w-full items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
-          >
-            <ArrowRight className="size-4" />
-            الرجوع للرئيسية
-          </Link>
         </div>
+
+        {/* Steps */}
+        <div className="space-y-3 mb-8">
+          {[
+            "غادي نتاصلو بيك تليفونياً لتأكيد الطلب",
+            "كنجهّزو الطلب وكنصيفطوه ليك",
+            "كتعاين السلعة وكتخلّص غير كي توصلك",
+          ].map((step, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-3 rounded-xl border border-zinc-100 bg-white px-4 py-3.5"
+            >
+              <span className="flex-1 text-sm text-zinc-600 font-medium text-right">
+                {step}
+              </span>
+              <span className="size-8 rounded-full bg-primary/10 text-primary font-bold text-sm flex items-center justify-center flex-shrink-0">
+                {i + 1}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* CTA Button */}
+        <Link
+          href="/"
+          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary hover:bg-primary/90 text-white px-6 py-4 text-base font-bold transition-colors shadow-lg shadow-primary/20"
+        >
+          <CornerDownLeft className="size-5" />
+          رجوع للصفحة الرئيسية
+        </Link>
+
+        {/* Footer Note */}
+        <p className="text-xs text-zinc-400 mt-6">
+          🚚 التوصيل 24-48 ساعة · لجميع مدن المغرب
+        </p>
       </div>
     </div>
   );
