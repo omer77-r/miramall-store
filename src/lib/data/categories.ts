@@ -11,7 +11,7 @@ export const categories: Category[] = [
     image: "/images/categories/home-kitchen.jpg",
     icon: "Home",
     parentId: null,
-    productCount: 6,
+    productCount: 7,
     subCategoryIds: ["sub-home-1", "sub-home-2", "sub-home-3"],
   },
   {

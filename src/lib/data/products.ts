@@ -363,6 +363,39 @@ export const products: Product[] = [
     },
     inStock: true,
     codAvailable: true
+  },
+  {
+    id: "p12",
+    slug: "shoe-washing-machine-bag",
+    name: "Sturdy Washing Machine Bag for Shoes of Every Kind",
+    nameAr: "كيس غسل الأحذية للغسالة",
+    description: "Durable machine-washing bag for shoes. Protects and cleans all shoe types in the washing machine, reduces noise with soft chenille fabric and a sturdy nylon zipper.",
+    descriptionAr: "غسّل سبّاطك فالغسالة بلا ما تخاف! 👟🧺 هاد الكيس مصمّم خصيصاً لغسل الصباط فالغسالة. كيحمي السباط وكينقّيه مزيان بفضل الفرو الناعم اللي فالداخل. مصنوع من قماش chenille ناعم باش يقلّل الحس فالغسالة. السحّاب (zipper) ديالو من النايلون القوي ماكيتحلّش وماكيتخسّرش، والتصميم المطّاطي فالطرف كيمنع الكيس يتحل. صالح لجميع أنواع الصباط — رياضي، tennis، sneakers، وعادي. كيوفّر ليك الوقت والمجهود بلا ما تغسل بيديك. \n\nسؤال: واش الفرو اللي فالداخل غادي يصفّر السباط؟ لا. مصنوع من مواد عالية الجودة ماكتصبغش. كننصحوك تقلب الكيس وتغسلو مرة ولا جوج قبل أول استعمال. نضافة كاملة وراحة ليديك!",
+    price: 150,
+    originalPrice: 220,
+    discount: 32,
+    images: ["/products/product_12_img1.png", "/products/product_12_img2.png", "/products/product_12_img3.png", "/products/product_12_img4.png", "/products/product_12_img5.png"],
+    category: "cat-home",
+    tags: ["غسالة", "أحذية", "تنظيف", "منزل"],
+    rating: 4.7,
+    reviewCount: 63,
+    isNew: true,
+    isBestSeller: true,
+    isTrending: true,
+    features: [
+      "كيغسل الصباط فالغسالة بأمان",
+      "قماش chenille ناعم كيقلّل الحس",
+      "سحّاب نايلون قوي ماكيتحلّش",
+      "صالح لجميع أنواع الأحذية (رياضي، tennis، عادي)"
+    ],
+    specifications: {
+      "الاستخدام": "غسل الأحذية فالغسالة",
+      "المادة": "قماش chenille + نايلون",
+      "النوع": "كيس غسل بسحّاب",
+      "صالح لـ": "جميع أنواع الأحذية"
+    },
+    inStock: true,
+    codAvailable: true
   }
 ];
 
@@ -514,6 +547,15 @@ export const reviews: Review[] = [
     comment: "بعد نهار خدمة طويل، آلة المساج هادي كاتفك التوتر فالكتفين. حقاً مريحة ومستاهلة.",
     date: "2026-06-26",
     avatar: "/images/avatars/avatar-3.jpg"
+  },
+  {
+    id: "r12",
+    productId: "p12",
+    userName: "حنان ف.",
+    rating: 5,
+    comment: "ولّيت نغسل الصباط فالغسالة بلا حس وبلا خوف. السحّاب قوي والصباط كيخرج نقي. واعر بزاف!",
+    date: "2026-06-28",
+    avatar: "/images/avatars/avatar-2.jpg"
   },
 ];
 
