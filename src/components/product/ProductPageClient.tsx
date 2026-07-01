@@ -88,15 +88,24 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
   const router = useRouter();
 
   useEffect(() => {
-    if (typeof window !== "undefined" && typeof window.fbq === "function") {
-      window.fbq("track", "ViewContent", {
-        content_name: product.nameAr,
-        content_ids: [product.id],
-        content_type: "product",
-        value: product.price,
-        currency: "MAD",
-      });
-    }
+    let tries = 0;
+    let timer: ReturnType<typeof setTimeout>;
+    const fireViewContent = () => {
+      if (typeof window !== "undefined" && typeof window.fbq === "function") {
+        window.fbq("track", "ViewContent", {
+          content_name: product.nameAr,
+          content_ids: [product.id],
+          content_type: "product",
+          value: product.price,
+          currency: "MAD",
+        });
+      } else if (tries++ < 25) {
+        // l Pixel مازال ماتحمّلش — نعاودو نحاولو
+        timer = setTimeout(fireViewContent, 200);
+      }
+    };
+    fireViewContent();
+    return () => clearTimeout(timer);
   }, [product.id, product.nameAr, product.price]);
 
   const productReviews = useMemo(() => getProductReviews(product.id), [product.id]);
