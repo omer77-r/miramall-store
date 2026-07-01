@@ -17,6 +17,7 @@ export interface OrderRow {
   unitPrice?: number;
   totalPrice: number;
   status: string;
+  source?: string;
 }
 
 function generateOrderId(): string {

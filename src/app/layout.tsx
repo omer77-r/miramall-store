@@ -5,6 +5,7 @@ import { ClientProviders } from "@/components/providers/ClientProviders";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
+import AttributionTracker from "@/components/AttributionTracker";
 import Script from "next/script";
 
 const cairo = Cairo({
@@ -70,6 +71,7 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
           <MobileBottomNav />
+          <AttributionTracker />
         </ClientProviders>
         <Script
           id="meta-pixel"

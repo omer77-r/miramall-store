@@ -16,6 +16,7 @@ const COLUMNS = [
   "الكمية",
   "ثمن الوحدة",
   "المجموع",
+  "المصدر",
   "حالة الطلب",
 ];
 
@@ -94,6 +95,7 @@ export default async function AdminPage() {
                         "px-3 py-2.5 whitespace-nowrap " +
                         (c === "رقم الهاتف" ? "font-mono " : "") +
                         (c === "المجموع" ? "font-bold text-primary " : "") +
+                        (c === "المصدر" ? "font-semibold " : "") +
                         (c === "حالة الطلب" ? "font-bold text-amber-600 " : "")
                       }
                       dir={c === "رقم الهاتف" ? "ltr" : "rtl"}

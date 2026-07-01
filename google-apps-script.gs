@@ -70,6 +70,14 @@ function doPost(e) {
     var total = Number(d.totalPrice) || 0;
     var unit = d.unitPrice != null ? Number(d.unitPrice) : (qty ? Math.round(total / qty) : total);
 
+    // عنوان عمود المصدر (O) — كنزيدوه مرة وحدة إلا ماكانش
+    if (!sheet.getRange(1, 15).getValue()) {
+      sheet.getRange(1, 15)
+        .setValue("المصدر")
+        .setBackground("#FF6B00").setFontColor("#FFFFFF").setFontWeight("bold")
+        .setHorizontalAlignment("center");
+    }
+
     var row = [
       now,                       // A تاريخ الطلب
       orderNumStr,               // B رقم الطلب
@@ -85,6 +93,7 @@ function doPost(e) {
       "",                        // L ملاحظات
       "",                        // M المسؤول
       now,                       // N آخر تحديث
+      d.source || "مباشر",       // O المصدر (TikTok / Meta / مباشر)
     ];
 
     sheet.getRange(newRow, 1, 1, row.length).setValues([row]);
@@ -93,6 +102,7 @@ function doPost(e) {
     sheet.getRange(newRow, 1).setNumberFormat("dd/MM/yyyy HH:mm");   // A
     sheet.getRange(newRow, 4).setNumberFormat("@");                  // D
     sheet.getRange(newRow, 14).setNumberFormat("dd/MM/yyyy HH:mm");  // N
+    sheet.getRange(newRow, 15).setHorizontalAlignment("center");     // O
 
     return ContentService
       .createTextOutput(JSON.stringify({ ok: true, order: orderNumStr, row: newRow }))

@@ -17,6 +17,7 @@ const orderSchema = z.object({
   quantity: z.number().int().min(1),
   unitPrice: z.number().min(0).optional(),
   totalPrice: z.number().min(1),
+  source: z.string().max(80).optional(),
 });
 
 export async function POST(request: NextRequest) {

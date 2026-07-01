@@ -8,6 +8,7 @@ declare global {
     ttq?: { track: (...args: unknown[]) => void; page?: (...args: unknown[]) => void };
   }
 }
+import { getAttribution } from "@/lib/attribution";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -194,6 +195,7 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
           quantity,
           unitPrice: product.price,
           totalPrice: finalPrice,
+          source: getAttribution(),
         }),
       });
 
