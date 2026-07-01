@@ -34,6 +34,27 @@ function getSheet_() {
   return sheets[0];
 }
 
+// كيرجع جميع الطلبات (كتستعملو صفحة /admin ديال المتجر)
+function doGet() {
+  try {
+    var sheet = getSheet_();
+    var values = sheet.getDataRange().getValues();
+    var headers = values.shift() || [];
+    var orders = values.map(function (row) {
+      var o = {};
+      headers.forEach(function (h, i) { o[h] = row[i]; });
+      return o;
+    });
+    return ContentService
+      .createTextOutput(JSON.stringify({ ok: true, orders: orders }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ ok: false, error: String(err) }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
 function doPost(e) {
   try {
     var sheet = getSheet_();
