@@ -5,6 +5,7 @@ import { useState, useRef, useMemo, useEffect } from "react";
 declare global {
   interface Window {
     fbq?: (...args: unknown[]) => void;
+    ttq?: { track: (...args: unknown[]) => void; page?: (...args: unknown[]) => void };
   }
 }
 import Image from "next/image";
@@ -99,6 +100,13 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
           value: product.price,
           currency: "MAD",
         });
+        window.ttq?.track("ViewContent", {
+          content_id: product.id,
+          content_name: product.nameAr,
+          content_type: "product",
+          value: product.price,
+          currency: "MAD",
+        });
       } else if (tries++ < 25) {
         // l Pixel مازال ماتحمّلش — نعاودو نحاولو
         timer = setTimeout(fireViewContent, 200);
@@ -166,6 +174,16 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
         });
       }
 
+      if (typeof window !== "undefined" && window.ttq) {
+        window.ttq.track("InitiateCheckout", {
+          content_id: product.id,
+          content_name: product.nameAr,
+          quantity,
+          value: finalPrice,
+          currency: "MAD",
+        });
+      }
+
       const res = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -197,6 +215,16 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
           content_name: product.nameAr,
           content_ids: [product.slug],
           content_type: "product",
+          value: finalPrice,
+          currency: "MAD",
+        });
+      }
+
+      if (typeof window !== "undefined" && window.ttq) {
+        window.ttq.track("PlaceAnOrder", {
+          content_id: product.id,
+          content_name: product.nameAr,
+          quantity,
           value: finalPrice,
           currency: "MAD",
         });
