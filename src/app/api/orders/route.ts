@@ -49,11 +49,15 @@ export async function POST(request: NextRequest) {
 
     const order = createOrder(result.data);
 
+    // Backup ديما ف l logs — حتى إلا طاح كلشي، l طلب recoverable من Dokploy logs
+    console.log("NEW_ORDER " + JSON.stringify(order));
+
     // 1) كنجربو نصيفطوه ل Google Sheet (كيخدم online)
     const sentToSheet = await appendOrderToSheet(order);
 
-    // 2) إلا ماكانش webhook مكوّن، كنسجلوه ف Excel محلي (للتطوير المحلي)
+    // 2) إلا ماوصلش l Sheet، كنسجلوه ف Excel محلي + كنصرخو ف l logs
     if (!sentToSheet) {
+      console.error("ORDER_NOT_IN_SHEET " + JSON.stringify(order));
       try {
         saveOrderToExcel(order);
       } catch (e) {
