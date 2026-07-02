@@ -20,7 +20,7 @@ const CITIES = [
   "الجديدة", "بني ملال", "خريبكة", "العيون",
 ];
 
-const TIMES = ["دابا", "قبل شوية", "هاد الصباح", "اليوم"];
+const TIMES = ["دابا", "هاد الصباح", "اليوم"];
 
 export default function RecentOrderToast({ productName }: { productName: string }) {
   const [toast, setToast] = useState<{ name: string; city: string; time: string } | null>(null);
@@ -40,9 +40,9 @@ export default function RecentOrderToast({ productName }: { productName: string 
       hideTimer = setTimeout(() => setToast(null), 5000);
     };
 
-    // أول إشعار من بعد 7 ثواني، ومن بعد كل 20 ثانية
+    // أول إشعار من بعد 7 ثواني، ومن بعد كل 50 ثانية
     const first = setTimeout(show, 7000);
-    const loop = setInterval(show, 20000);
+    const loop = setInterval(show, 50000);
     return () => {
       clearTimeout(first);
       clearInterval(loop);

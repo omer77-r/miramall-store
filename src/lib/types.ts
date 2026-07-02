@@ -20,6 +20,8 @@ export interface Product {
   specifications: Record<string, string>
   inStock: boolean
   codAvailable: boolean
+  /** عدد القطع الباقية فالستوك — إلا تحط رقم، كيبان "بقاو غير X" فصفحة المنتج */
+  stockLeft?: number
 }
 
 export interface Category {

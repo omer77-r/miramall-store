@@ -85,6 +85,19 @@ export function ShopPageClient({ products, categories }: ShopPageClientProps) {
     { value: "rating", label: "التقييم" },
   ];
 
+  // فلترة سريعة بالثمن — كليك واحد
+  const priceChips = [
+    { label: "الكل", min: "", max: "" },
+    { label: "أقل من 200 درهم", min: "", max: "199" },
+    { label: "200 - 250 درهم", min: "200", max: "250" },
+    { label: "أكثر من 250 درهم", min: "251", max: "" },
+  ];
+  const activeChip = priceChips.findIndex((c) => c.min === minPrice && c.max === maxPrice);
+  const applyChip = (c: { min: string; max: string }) => {
+    setMinPrice(c.min);
+    setMaxPrice(c.max);
+  };
+
   const filterProps = {
     search,
     onSearchChange: setSearch,
@@ -147,6 +160,24 @@ export function ShopPageClient({ products, categories }: ShopPageClientProps) {
                   <SlidersHorizontal className="size-5" />
                 </button>
               </div>
+            </div>
+
+            {/* فلترة سريعة بالثمن */}
+            <div className="flex gap-2 overflow-x-auto pb-2 mb-4 -mx-1 px-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {priceChips.map((chip, i) => (
+                <button
+                  key={chip.label}
+                  onClick={() => applyChip(chip)}
+                  className={
+                    "shrink-0 rounded-full px-4 py-2 text-xs font-bold border transition-colors " +
+                    (activeChip === i
+                      ? "bg-primary text-white border-primary"
+                      : "bg-card text-foreground border-border hover:border-primary/40")
+                  }
+                >
+                  {chip.label}
+                </button>
+              ))}
             </div>
 
             {filteredProducts.length === 0 ? (

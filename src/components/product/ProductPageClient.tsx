@@ -357,10 +357,27 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
             </div>
 
             {/* Stock */}
-            <div className="flex items-center gap-2">
-              <div className="size-2.5 rounded-full bg-emerald-500" />
-              <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">في المخزون</span>
-            </div>
+            {product.stockLeft && product.stockLeft <= 10 ? (
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-bold text-red-600">
+                    ⚠️ بقاو غير {product.stockLeft} فالستوك — طلب دابا قبل ما يسالي
+                  </span>
+                </div>
+                {/* شريط الستوك */}
+                <div className="h-2 w-full max-w-[240px] rounded-full bg-red-100 overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-l from-red-500 to-amber-500"
+                    style={{ width: `${Math.min(100, product.stockLeft * 10)}%` }}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <div className="size-2.5 rounded-full bg-emerald-500" />
+                <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">في المخزون</span>
+              </div>
+            )}
 
             {/* Description */}
             <p className="text-muted-foreground leading-relaxed">{product.descriptionAr}</p>

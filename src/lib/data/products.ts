@@ -32,7 +32,8 @@ export const products: Product[] = [
       "الاستخدام": "منزلي وسفر"
     },
     inStock: true,
-    codAvailable: true
+    codAvailable: true,
+    stockLeft: 8
   },
   {
     id: "p2",
@@ -65,7 +66,8 @@ export const products: Product[] = [
       "التركيب": "سهل"
     },
     inStock: true,
-    codAvailable: true
+    codAvailable: true,
+    stockLeft: 6
   },
   {
     id: "p3",
@@ -98,7 +100,8 @@ export const products: Product[] = [
       "الوظائف": "تصبين + تنشيف + تعقيم"
     },
     inStock: true,
-    codAvailable: true
+    codAvailable: true,
+    stockLeft: 9
   },
   {
     id: "p4",
@@ -131,7 +134,8 @@ export const products: Product[] = [
       "اللون": "متعدد"
     },
     inStock: true,
-    codAvailable: true
+    codAvailable: true,
+    stockLeft: 5
   },
   {
     id: "p5",
@@ -164,7 +168,8 @@ export const products: Product[] = [
       "المادة": "PVC قوي"
     },
     inStock: true,
-    codAvailable: true
+    codAvailable: true,
+    stockLeft: 7
   },
   {
     id: "p6",
@@ -197,7 +202,8 @@ export const products: Product[] = [
       "الإضاءة": "LED قوية"
     },
     inStock: true,
-    codAvailable: true
+    codAvailable: true,
+    stockLeft: 9
   },
   {
     id: "p7",
@@ -230,7 +236,8 @@ export const products: Product[] = [
       "النوع البشرة": "كاع نوع"
     },
     inStock: true,
-    codAvailable: true
+    codAvailable: true,
+    stockLeft: 4
   },
   {
     id: "p8",
@@ -263,7 +270,8 @@ export const products: Product[] = [
       "الهدية": "شريط LED مجاني"
     },
     inStock: true,
-    codAvailable: true
+    codAvailable: true,
+    stockLeft: 6
   },
   {
     id: "p9",
@@ -296,7 +304,8 @@ export const products: Product[] = [
       "السرعات": "متعددة"
     },
     inStock: true,
-    codAvailable: true
+    codAvailable: true,
+    stockLeft: 8
   },
   {
     id: "p10",
@@ -329,7 +338,8 @@ export const products: Product[] = [
       "الحجم": "محمول"
     },
     inStock: true,
-    codAvailable: true
+    codAvailable: true,
+    stockLeft: 5
   },
   {
     id: "p11",
@@ -362,7 +372,8 @@ export const products: Product[] = [
       "الشحن": "USB قابل للشحن"
     },
     inStock: true,
-    codAvailable: true
+    codAvailable: true,
+    stockLeft: 6
   },
   {
     id: "p12",
@@ -395,7 +406,8 @@ export const products: Product[] = [
       "صالح لـ": "جميع أنواع الأحذية"
     },
     inStock: true,
-    codAvailable: true
+    codAvailable: true,
+    stockLeft: 9
   }
 ];
 
