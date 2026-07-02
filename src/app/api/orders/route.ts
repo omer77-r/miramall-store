@@ -11,7 +11,8 @@ const orderSchema = z.object({
     .string()
     .regex(/^(05|06|07)\d{8}$/, "الرقم خاصو يبدا ب 06 أو 07 أو 05 (10 أرقام)"),
   city: z.string().min(1, "اختار المدينة"),
-  address: z.string().min(5, "العنوان خاصو يكون 5 حروف على الأقل"),
+  // العنوان اختياري — كيتأكد مع العميل فالمكالمة
+  address: z.string().optional().default(""),
   product: z.string(),
   productSlug: z.string(),
   quantity: z.number().int().min(1),

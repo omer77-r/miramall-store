@@ -28,6 +28,7 @@ import { cn } from "@/lib/utils";
 import type { Product, Review } from "@/lib/types";
 import { getProductReviews, getRelatedProducts, products } from "@/lib/data/products";
 import { ProductCard } from "@/components/product/ProductCard";
+import RecentOrderToast from "@/components/product/RecentOrderToast";
 import { useRouter } from "next/navigation";
 
 interface ProductPageClientProps {
@@ -143,7 +144,7 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
     if (formData.fullName.length < 3) errors.fullName = "الاسم خاصو يكون 3 حروف على الأقل";
     if (!validatePhone(formData.phone)) errors.phone = "الرقم خاصو يبدا ب 06 أو 07 أو 05 (10 أرقام)";
     if (!formData.city) errors.city = "اختار المدينة";
-    if (formData.address.length < 5) errors.address = "العنوان خاصو يكون 5 حروف على الأقل";
+    // العنوان اختياري — كنأكدوه مع العميل فالتيليفون
 
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
@@ -434,6 +435,15 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
                   </p>
                 </div>
 
+                {/* Social proof + urgency */}
+                <div className="flex items-center justify-center gap-2 text-xs font-bold">
+                  <span className="flex items-center gap-1 text-amber-600">
+                    🔥 {totalReviews}+ شخص طلبوه
+                  </span>
+                  <span className="w-px h-3 bg-border" />
+                  <span className="text-red-500">التخفيض صالح اليوم فقط</span>
+                </div>
+
                 {/* Product Summary */}
                 <div className="bg-primary/5 border border-primary/20 rounded-xl px-4 py-2.5 flex items-center justify-between">
                   <span className="text-sm text-foreground font-bold">{product.nameAr} <span className="text-muted-foreground font-medium">×{quantity}</span></span>
@@ -501,9 +511,11 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-1">العنوان الكامل</label>
+                  <label className="block text-sm font-medium text-foreground mb-1">
+                    العنوان الكامل <span className="text-muted-foreground font-normal">(اختياري — نأكدوه معاك فالتيليفون)</span>
+                  </label>
                   <textarea
-                    required rows={2}
+                    rows={2}
                     placeholder="مثال: حي السلام، شارع الحسن الثاني، رقم 12"
                     value={formData.address}
                     onChange={(e) => {
@@ -526,14 +538,14 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
                 )}
 
                 {/* COD + Delivery */}
-                <div className="space-y-2">
+                <div className="grid grid-cols-2 gap-2">
                   <div className="flex items-center gap-2 rounded-xl bg-emerald-50 border border-emerald-200 p-3">
                     <ShieldCheck className="size-4 text-emerald-600 shrink-0" />
-                    <span className="text-xs text-emerald-700 font-medium">خلّص ملي توصلك - توصيل لجميع مدن المغرب</span>
+                    <span className="text-xs text-emerald-700 font-bold">خلّص ملي توصلك</span>
                   </div>
-                  <div className="flex items-center gap-2 rounded-xl bg-muted/30 border border-border p-3">
-                    <Truck className="size-4 text-primary shrink-0" />
-                    <span className="text-xs text-muted-foreground">التوصيل خلال 1-2 أيام</span>
+                  <div className="flex items-center gap-2 rounded-xl bg-emerald-50 border border-emerald-200 p-3">
+                    <Truck className="size-4 text-emerald-600 shrink-0" />
+                    <span className="text-xs text-emerald-700 font-bold">توصيل مجاني 1-2 أيام</span>
                   </div>
                 </div>
 
@@ -541,7 +553,7 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
                   type="submit"
                   disabled={isSubmitting}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-primary py-3 text-sm font-bold text-white shadow-lg shadow-primary/25 hover:bg-primary/90 transition-colors disabled:opacity-60"
+                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-primary py-4 text-base font-extrabold text-white shadow-lg shadow-primary/30 hover:bg-primary/90 transition-colors disabled:opacity-60"
                 >
                   {isSubmitting ? (
                     <span className="flex items-center gap-2">
@@ -553,11 +565,14 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
                     </span>
                   ) : (
                     <>
-                      <ShoppingCart className="size-4" />
-                      تأكيد الطلب (خلّص ملي توصلك)
+                      <ShoppingCart className="size-5" />
+                      اطلب دابا — خلّص ملي توصلك
                     </>
                   )}
                 </motion.button>
+                <p className="text-center text-[11px] text-muted-foreground -mt-1">
+                  ✓ بلا خلاص مسبق &nbsp;·&nbsp; ✓ إرجاع ساهل ف 14 يوم &nbsp;·&nbsp; ✓ نتاصلو بيك قبل التوصيل
+                </p>
               </form>
             )}
 
@@ -743,6 +758,9 @@ export function ProductPageClient({ product }: ProductPageClientProps) {
           </motion.a>
         </div>
       </div>
+
+      {/* Social proof: إشعارات الطلبات */}
+      <RecentOrderToast productName={product.nameAr} />
     </div>
   );
 }
